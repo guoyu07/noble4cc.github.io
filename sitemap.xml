@@ -2,133 +2,140 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://noble4cc.me/2014/12/03/the-typedef-keyword/</loc>
+    <loc>http://noble4cc.me/what-is-wsgi/</loc>
+    
+    <lastmod>2016-04-16T11:47:03.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://noble4cc.me/HTTP-agreement-to-explain/</loc>
+    
+    <lastmod>2016-04-16T11:47:01.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://noble4cc.me/Iterators-and-Generators/</loc>
+    
+    <lastmod>2016-04-16T10:29:26.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://noble4cc.me/The-difference-between-python2-and-python3/</loc>
+    
+    <lastmod>2016-04-16T10:21:53.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://noble4cc.me/the-typedef-keyword/</loc>
     
     <lastmod>2016-04-16T06:10:06.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2014/12/03/The-realization-of-the-cpp-polymorphism-and-coverage-and-hidden/</loc>
+    <loc>http://noble4cc.me/The-realization-of-the-cpp-polymorphism-and-coverage-and-hidden/</loc>
     
     <lastmod>2016-04-16T06:10:00.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2016/01/16/The-difference-between-python2-and-python3/</loc>
-    
-    <lastmod>2016-04-16T06:09:54.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://noble4cc.me/2015/11/11/Python-magic-method-summary/</loc>
+    <loc>http://noble4cc.me/Python-magic-method-summary/</loc>
     
     <lastmod>2016-04-16T06:09:47.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/03/13/Linux-notes-the-input-and-output-redirection/</loc>
+    <loc>http://noble4cc.me/Linux-notes-the-input-and-output-redirection/</loc>
     
     <lastmod>2016-04-16T06:09:40.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/07/13/Linux-notes-Shutdown-and-restart%20/</loc>
+    <loc>http://noble4cc.me/Linux-notes-Shutdown-and-restart%20/</loc>
     
     <lastmod>2016-04-16T06:09:34.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/06/23/Linux-notes-link/</loc>
+    <loc>http://noble4cc.me/Linux-notes-link/</loc>
     
     <lastmod>2016-04-16T06:09:27.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/06/01/Linux-notes-compression-and-decompression/</loc>
+    <loc>http://noble4cc.me/Linux-notes-compression-and-decompression/</loc>
     
     <lastmod>2016-04-16T06:09:18.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/05/21/Linux-notes-commonly-used-commands/</loc>
+    <loc>http://noble4cc.me/Linux-notes-commonly-used-commands/</loc>
     
     <lastmod>2016-04-16T06:09:12.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/02/23/Linux-Note-the-user/</loc>
+    <loc>http://noble4cc.me/Linux-Note-the-user/</loc>
     
     <lastmod>2016-04-16T06:09:05.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/04/16/Linux-note--Linux-disk-management/</loc>
+    <loc>http://noble4cc.me/Linux-note--Linux-disk-management/</loc>
     
     <lastmod>2016-04-16T06:08:59.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/12/30/Iterators-and-Generators/</loc>
-    
-    <lastmod>2016-04-16T06:08:52.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://noble4cc.me/2014/12/21/HTTP-agreement-to-explain/</loc>
-    
-    <lastmod>2016-04-16T06:08:39.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://noble4cc.me/2014/12/21/cpp-function-pointer/</loc>
+    <loc>http://noble4cc.me/cpp-function-pointer/</loc>
     
     <lastmod>2016-04-16T06:08:29.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/06/14/C++-notes-file-IO-operation/</loc>
+    <loc>http://noble4cc.me/C++-notes-file-IO-operation/</loc>
     
     <lastmod>2016-04-16T06:08:23.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/05/16/C++-notes-C++11-features-of-grammar-2/</loc>
+    <loc>http://noble4cc.me/C++-notes-C++11-features-of-grammar-2/</loc>
     
     <lastmod>2016-04-16T06:08:08.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/04/03/C++-notes-C++11-features-of-grammar-1/</loc>
+    <loc>http://noble4cc.me/C++-notes-C++11-features-of-grammar-1/</loc>
     
     <lastmod>2016-04-16T06:07:51.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/04/09/C-notes--C-11-new-features-of-the-standard-library/</loc>
+    <loc>http://noble4cc.me/C-notes--C-11-new-features-of-the-standard-library/</loc>
     
     <lastmod>2016-04-16T06:07:46.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://noble4cc.me/2015/03/12/C-language-undefined-behavior/</loc>
+    <loc>http://noble4cc.me/C-language-undefined-behavior/</loc>
     
     <lastmod>2016-04-16T06:07:38.000Z</lastmod>
     
