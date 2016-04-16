@@ -1,0 +1,699 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Python的魔术在python中是比较有特色的部分，合理使用还会使程序变的更加简洁。今天我们就来介绍一下python的魔术方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python的魔术方法总结">
+<meta property="og:url" content="http://noble4cc.me/2015/11/11/Python-magic-method-summary/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="Python的魔术在python中是比较有特色的部分，合理使用还会使程序变的更加简洁。今天我们就来介绍一下python的魔术方法">
+<meta property="og:updated_time" content="2016-04-16T06:09:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python的魔术方法总结">
+<meta name="twitter:description" content="Python的魔术在python中是比较有特色的部分，合理使用还会使程序变的更加简洁。今天我们就来介绍一下python的魔术方法">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Python的魔术方法总结 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python的魔术方法总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-11-11T09:41:00+08:00" content="2015-11-11">
+              2015-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/11/11/Python-magic-method-summary/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/11/11/Python-magic-method-summary/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Python的魔术在python中是比较有特色的部分，合理使用还会使程序变的更加简洁。今天我们就来介绍一下python的魔术方法<br><a id="more"></a><br>首先什么是魔术方法，在python中，所有的变量都是基于对象的，每个对象中都存在着魔术方法，或者说你都可以定义魔术方法。所有的魔术方法都是以双下划线开头和结尾的。<br>他们和普通的成员方法没有区别，只是名字是固定的，比如说我们最常用的是<code>__init__</code>,这是一个类的构造方法。解释器默认<code>__init__</code>就是一个类的构造方法，在构造一个对象时会调用这个方法。当然并不是所有的每个类都存在魔术方法，你必须在定义类时将魔术方法定义好，当然如果是python3的话默认是继承object的，一旦被定义就会继承父类的魔术方法。</p>
+<h3 id="构造和初始化"><a href="#构造和初始化" class="headerlink" title="构造和初始化"></a>构造和初始化</h3><p>正如我们之前提到的构造方法__init__,它也是一个魔术方法，我们使用它在构造时初始化一些数据。但是当我们构造一个对象的实例时，__init__并不是罪先调用的，在__init__调用之前，会先调用__new__,在这个对象的生命周期的末尾会调用__del__,现在我们就看一下这三个方法。</p>
+<ul>
+<li><strong>__new__(cls, […):</strong>执行在__init__之前，这是个类级别的方法，依照Python官方文档的说法，__new__方法主要是当你继承一些不可变的class时(比如int, str, tuple)， 提供给你一个自定义这些类的实例化过程的途径。一般我们不会使用这个方法，就不做过多讨论了，有兴趣的同学可以查看文档。</li>
+<li><strong>__init__(self, […):</strong>构造方法，负责构造一个实例时数据的初始化，第一个参数是该实例的引用，它几乎是最常用的魔术方法了。</li>
+<li><em>*__del__(self):</em>就像__init__一样，__init__是个狗杂函数，它就是个析构函数。当然，这不是定义了del obj的行为。它其实是定义了一些在解释器将他牢记回收时我们所做的事情。比如说关闭文件或者说socket。但是就算定义了__del__我们一步一定保证该方法会马上执行，因为该对象可能还存活着。__del__平时很少会用到，并且请谨慎使用。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileObject</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, filepath=<span class="string">'~'</span>, filename=<span class="string">'sample.txt'</span>)</span>:</span></span><br><span class="line">        self.file = open(join(filepath, filename), <span class="string">'r+'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.file.close()</span><br><span class="line">        <span class="keyword">del</span> self.file</span><br></pre></td></tr></table></figure>
+<h3 id="比较魔术方法"><a href="#比较魔术方法" class="headerlink" title="比较魔术方法"></a>比较魔术方法</h3><p>python提供了一些方法用于使用比较运算符比较两个对象，比如说 obj1&lt;obj2.我们只需要覆盖这些方法就可以使用他了运算符来进行比较了。下面列出这些方法:</p>
+<p><strong>__cmp__(self, other):</strong> __cmp__ 是一个万能的比较方法，我们能使用所有的比较运算符进行比较。当self &lt;other时我们就返回一个负数，大于返回一个正数，等于的话返回0.虽然有其他方法可以定义每种比较操作，但是使用__cmp__可以消除重复性，让代码更加清晰。</p>
+<p><strong>__eq__(self, other):</strong>定义相等符号的行为，==</p>
+<p><strong>__ne__(self, other):</strong>定义不等符号的行为 !=</p>
+<p><strong>__lt__(self, other):</strong>定义小于符号的行为，&lt;</p>
+<p><strong>__gt__(self, other):</strong>定义大于符号的行为，&gt;</p>
+<p><strong>__le__(self, other):</strong>定义小于等于符号的行为，&lt;=</p>
+<p><strong>__ge__(self, other):</strong>定义大于等于符号的行为，&gt;=</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Word(str):</span><br><span class="line">    &apos;&apos;&apos;Class for words, defining comparison based on word length.&apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">    def __new__(cls, word):</span><br><span class="line">        # Note that we have to use __new__. This is because str is an immutable</span><br><span class="line">        # type, so we have to initialize it early (at creation)</span><br><span class="line">        if &apos; &apos; in word:</span><br><span class="line">            print &quot;Value contains spaces. Truncating to first space.&quot;</span><br><span class="line">            word = word[:word.index(&apos; &apos;)] # Word is now all chars before first space</span><br><span class="line">        return str.__new__(cls, word)</span><br><span class="line"></span><br><span class="line">    def __gt__(self, other):</span><br><span class="line">        return len(self) &gt; len(other)</span><br><span class="line">    def __lt__(self, other):</span><br><span class="line">        return len(self) &lt; len(other)</span><br><span class="line">    def __ge__(self, other):</span><br><span class="line">        return len(self) &gt;= len(other)</span><br><span class="line">    def __le__(self, other):</span><br><span class="line">        return len(self) &lt;= len(other)</span><br></pre></td></tr></table></figure>
+<h3 id="数学运算符"><a href="#数学运算符" class="headerlink" title="数学运算符"></a>数学运算符</h3><p>就像比较运算符一样，python也提供了可以自定义的数学符号行为。不如说常见的取负，取正，去绝对值等。还有+ - * /等运算。其实这就像C++中的运算符重载。在实际开发中非常的方便</p>
+<p><strong>__pos__(self):</strong>实现一个取正数的操作(比如 +obj ，python调用__pos__函数)<br><strong>__neg__(self):</strong>实现一个取负数的操作(比如 -obj )<br><strong>__abs__(self):</strong>实现一个内建的abs()函数的行为<br><strong>__invert__(self):</strong>实现一个取反操作符（～操作符）的行为。想要了解这个操作的解释<br><strong>__round__(self, n):</strong>实现一个内建的round（）函数的行为。 n 是待取整的十进制数.<br><strong>__floor__(self):</strong>实现math.floor()的函数行为,比如, 把数字下取整到最近的整数.<br><strong>__ceil__(self):</strong>实现math.ceil()的函数行为,比如, 把数字上取整到最近的整数.<br><strong>__trunc__(self):</strong>实现math.trunc()的函数行为,比如, 把数字截断而得到整数.  </p>
+<p>好吧，现在我们开始介绍双目运算操作或函数，比如 +, -, * 等等. 这些很容易自解释. </p>
+<p><strong>__add__(self, other):</strong>实现一个加法.<br><strong>__sub__(self, other):</strong>实现一个减法.<br><strong>__mul__(self, other):</strong>实现一个乘法.<br><strong>__floordiv__(self, other):</strong>实现一个“//”操作符产生的整除操作（）<br><strong>__div__(self, other):</strong>实现一个“/”操作符代表的除法操作.<br><strong>__truediv__(self, other):</strong>实现真实除法，注意，只有当你from __future__ import division时才会有效  </p>
+<p><strong>__mod__(self, other):</strong>实现一个“%”操作符代表的取模操作.<br><strong>__divmod__(self, other):</strong>实现一个内建函数divmod（）<br><strong>__pow__:</strong> 实现一个指数操作(“**”操作符）的行为   </p>
+<p><strong>__lshift__(self, other):</strong>实现一个位左移操作（&lt;&lt;）的功能<br><strong>__rshift__(self, other):</strong>实现一个位右移操作（&gt;&gt;）的功能.<br><strong>__and__(self, other):</strong>实现一个按位进行与操作（&amp;）的行为.<br><strong>__or__(self, other): </strong>实现一个按位进行或操作（|）的行为.<br><strong>__xor__(self, other):</strong>实现一个异或操作（^）的行为  </p>
+<p>此外还有反运算符魔术方法，反运算其实和不同的运算（比如加减乘除）是一样的，不一样的是魔术方法在传参的时候将self和 other进行交换。每个反运算魔术方法只是在名字前面添加r，比如反加法是：__radd__,在这里我们就不具体介绍了。</p>
+<h3 id="增量运算"><a href="#增量运算" class="headerlink" title="增量运算"></a>增量运算</h3><p>所谓的增量运算就是对象自己做某种运算,最后的值再返赋值给自己，比如num/=2。下面有很多为增量运算定义的预算符</p>
+<p><strong>__iadd__(self, other):</strong>加法赋值<br><strong>__isub__(self, other):</strong>减法赋值.<br><strong>__imul__(self, other):</strong>乘法赋值<br><strong>__ifloordiv__(self, other):</strong>整除赋值，地板除，相当于 //= 运算符.<br><strong>__idiv__(self, other):</strong>除法赋值，相当于 /= 运算符.<br><strong>__itruediv__(self, other):</strong>真除赋值，注意只有你 whenfrom __future__ import divisionis，才有效.<br><strong>__imod__(self, other):</strong>模赋值，相当于 %= 运算符.<br><strong>__ipow__:</strong>乘方赋值，相当于 <strong>= 运算符.  
+</strong>__ilshift__(self, other):<strong>左移赋值，相当于 &lt;&lt;= 运算符.  
+</strong>__irshift__(self, other):<strong>左移赋值，相当于 &gt;&gt;= 运算符.  
+</strong>__iand__(self, other):<strong>与赋值，相当于 &amp;= 运算符.  
+</strong>__ior__(self, other):<strong>或赋值，相当于 |= 运算符.  
+</strong>__ixor__(self, other):**异或运算符，相当于 ^= 运算符.  </p>
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><p>python存在着一些魔术方法，是用来提供类型转换的，比如我们执行int(obj)或者float(obj)</p>
+<p><strong>__int__(self):</strong>转换成整型.<br><strong>__long__(self):</strong>转换成长整型.<br><strong>__float__(self):</strong>转换成浮点型.<br><strong>__complex__(self):</strong>转换成 复数型.<br><strong>__oct__(self):</strong>转换成八进制.<br><strong>__hex__(self):</strong>转换成十六进制.<br><strong>__index__(self):</strong>当对象被切片时转换成int型。如果你定义了一个可能被用来做切片操作的数值型，你就应该定义__index__.<br><strong>__trunc__(self):</strong>当 math.trunc(self) 使用时被调用.__trunc__返回自身类型的整型截取 (通常是一个长整型).<br><strong>__coerce__(self,other):</strong>执行混合类型的运算，如果转换不能完成，应该返回None；否则，要返回一对两个元数的元组self和other, 被操作成同类型。  </p>
+<h3 id="表达你的类"><a href="#表达你的类" class="headerlink" title="表达你的类"></a>表达你的类</h3><p>使用一个字符串标示一个对象是非常有用的，这样做会使你的对象更加直观展示，比如 print obj，如果没有实现任何魔术方法的话，将大一这个对象的地址，如果实现一个魔术方法，你可以自定义打印的内容。  </p>
+<p><strong>__str__(self):</strong><br>定义当 str() 被你的一个类的实例调用时所要产生的行为。<br><strong>__repr__(self):</strong><br>定义 当 repr()  被你的一个类的实例调用时所要产生的行为。 str() 和 repr() 的主要区别是其目标群体。 repr() 返回的是机器可读的输出，而 str() 返回的是人类可读的。<br><strong>__unicode__(self):</strong><br>定义当 unicode() 被你的一个类的实例调用时所要产生的行为。 unicode() 和 str() 很相似，但是返回的是unicode字符串。注意，如果对你的类调用 str() 然而你只定义了 __unicode__() ，那么其将不会工作。你应该定义 __str__() 来确保调用时能返回正确的值，并不是每个人都有心情去使用unicode。<br><strong>__format__(self, formatstr):</strong><br>定义当你的一个类的实例被用来用新式的格式化字符串方法进行格式化时所要产生的行为。例如， “Hello, {0:abc}!”.format(a) 将会导致调用 a.__format__(“abc”) 。这对定义你自己的数值或字符串类型是十分有意义的，你可能会给出一些特殊的格式化选项。<br><strong>__hash__(self):</strong><br>定义当 hash()被你的一个类的实例调用时所要产生的行为。它返回一个整数，用来在字典中进行快速比较。请注意，这通常也承担着实现__eq__。有下面这样的规则：a == b 暗示着 hash(a) == hash(b) 。  </p>
+<p><strong>__nonzero__(self):</strong><br>定义当 bool() 被你的一个类的实例调用时所要产生的行为。本方法应该返回True或者False，取决于你想让它返回的值。<br><strong>__dir__(self):</strong><br>定义当 dir() 被你的一个类的实例调用时所要产生的行为。该方法应该返回一个属性的列表给用户，一般而言，实现 __dir__ 是不必要的，但是，如果你重新定义了__getattr__或__getattribute__（你将在下一节中看到）或者其它的动态生成属性，那么它对你的类的交互使用是至关重要的。<br><strong>__sizeof__(self):</strong><br>定义当 sys.getsizeof() 被你的一个类的实例调用时所要产生的行为。该方法应该以字节为单位，返回你的对象的大小。这通常对于以C扩展的形式实现的Python类更加有意义，其有助于理解这些扩展。  </p>
+<p>###属性访问</p>
+<p>python 比较有特色的是可以动态构建属性字段（其实很多脚本语言都有这个功能），比如obj没有name属性，我们可以这样动态的添加，obj.name=’new name’,在魔术方法方面也定义了很多方法让我们自定义这种行文</p>
+<p><strong>__getattr__(self, name):</strong><br>你可以定义如何处理用户试图访问一个不存在（不存在或还没创建）属性的行为。这对于捕获或者重定向一般的拼写错误非常有用，给出访问了不能访问的属性的警告（如果你愿意，你还可以推断并返回那个属性。），或者巧妙地处理一个AttributeError异常。它只有在一个不存在的属性被访问的情况下才被调用，然而，这并不是一个真正封装的方案。<br><strong>__setattr__(self, name, value):</strong><br>与__getattr__不同,__setattr__是一个真正的封装方案。它允许你定义当给一个存在或不存在的属性赋值时的行为，意味着对任何属性值的改变你都可以定义一个规则。可是，你得小心使用__setattr__，在这个清单结尾的例子会向你说明。<br><strong>__delattr__(self, name):</strong><br>它与__setattr__非常像, 只不过是用来删除而不是设置属性。 __detattr__需要预防措施，就像setattr一样，当被调用时可能会引起无限递归（当__delattr__已经实现时，调用 del self.name 就会引起无限的递归)。<br><strong>__getattribute__(self, name):</strong><br> __getattribute__相当适合它的同伴__setattr__和__delattr__.但我却不建议你使用它。__getattribute__只有在新风格的类中才会被使用（所有的新风格类在Python最新的版本中，在老版本中，你可以子类化object来获得一个新风格类。它允许你定义一条规则来处理无论什么时候属性值被访问时的行为。比如类似于由于其它的伙伴犯错而引起的无限递归（这时你就可以调用基类的__getattribute__方法来阻止它）。它也避免了对__getattr__的依赖，当__getattribute__方法已经实现的时候，__getattr__只有在__getattribute__被明确的调用或抛出一个AttributeError异常的时候才会被调用。这个方法能被使用（毕竟，这是你的选择），但是我不推荐它，因为它很少使用并且运行的时候很难保证没有BUG。   </p>
+<h3 id="自定义序列"><a href="#自定义序列" class="headerlink" title="自定义序列"></a>自定义序列</h3><p>python还可以使用魔术方法将一个对象变成像内置序列一样使用(dict,list….)。</p>
+<p><strong>__len__(self):</strong><br>返回容器的长度。对于可变和不可变容器的协议，这都是其中的一部分。<br><strong>__getitem__(self, key):</strong><br>定义当某一项被访问时，使用self[key]所产生的行为。这也是不可变容器和可变容器协议的一部分。如果键的类型错误将产生TypeError；如果key没有合适的值则产生KeyError。<br><strong>__setitem__(self, key, value):</strong><br>定义当一个条目被赋值时，使用self[nkey] = value所产生的行为。这也是协议的一部分。而且，在相应的情形下也会产生KeyError和TypeError。<br><strong>__delitem__(self, key):</strong><br>定义当某一项被删除时所产生的行为。（例如del self[key]）。这只是可变容器协议的一部分。当你使用一个无效的键时必须抛出适当的异常。<br><strong>__iter__(self):</strong><br>返回一个容器迭代器，很多情况下会返回迭代器，尤其是当内置的iter()方法被调用的时候，以及当使用for x in container:方式循环的时候。迭代器是它们本身的对象，它们必须定义返回self的<strong>iter</strong>方法。<br><strong>__reversed__(self):</strong><br>实现当reversed()被调用时的行为。应该返回序列反转后的版本。仅当序列可以是有序的时候实现它，例如对于列表或者元组。<br><strong>__contains__(self, item):</strong><br>定义了调用in和not in来测试成员是否存在的时候所产生的行为。你可能会问为什么这个不是序列协议的一部分？因为当__contains__没有被定义的时候，Python会迭代这个序列，并且当找到需要的值时会返回True。<br><strong>__missing__(self, key):</strong><br>其在dict的子类中被使用。它定义了当一个不存在字典中的键被访问时所产生的行为。（例如，如果我有一个字典d，当”george”不是字典中的key时，使用了d[“george”]，此时d[“george”]将会被调用）。  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FunctionalList</span>:</span></span><br><span class="line">    <span class="string">'''A class wrapping a list with some extra functional magic, like head,    tail, init, last, drop, and take.'''</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, values=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> values <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self.values = []</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.values = values</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> len(self.values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="comment"># if key is of invalid type or value, the list values will raise the error</span></span><br><span class="line">        <span class="keyword">return</span> self.values[key]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">        self.values[key] = value</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, key)</span>:</span></span><br><span class="line">        <span class="keyword">del</span> self.values[key]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> iter(self.values)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reversed__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> FunctionalList(reversed(self.values))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">append</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        self.values.append(value)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">head</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># get the first element</span></span><br><span class="line">        <span class="keyword">return</span> self.values[<span class="number">0</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tail</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># get all elements after the first</span></span><br><span class="line">        <span class="keyword">return</span> self.values[<span class="number">1</span>:]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># get elements up to the last</span></span><br><span class="line">        <span class="keyword">return</span> self.values[:<span class="number">-1</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">last</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># get last element</span></span><br><span class="line">        <span class="keyword">return</span> self.values[<span class="number">-1</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">drop</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="comment"># get all elements except first n</span></span><br><span class="line">        <span class="keyword">return</span> self.values[n:]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">take</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="comment"># get first n elements</span></span><br><span class="line">        <span class="keyword">return</span> self.values[:n]</span><br></pre></td></tr></table></figure>
+<h3 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h3><p>你也可以控制怎么使用内置在函数sisinstance()和issubclass()方法 反射定义魔法方法. 这个魔法方法是:<br><strong>__instancecheck__(self, instance):</strong><br>检查对象是否是您定义的类的一个实例(例.isinstance(instance, class).<br><strong>__subclasscheck__(self, subclass):</strong><br>检查类是否是你定义类的子类 (例.issubclass(subclass, class)).<br>这些魔法方法的用例看起来很小, 并且确实非常实用. 我不想花太多时间在反射魔法方法上，因为它们不是非常重要, 但是它们反应了关于面向对象程序上一些重要的东西在Python上,并且总的来说Python: 总是一个简单的方法去找某些事情, 即使是没有必要的. 这些魔法方法可能看起来不是很有用, 但是一旦你需要它们，你会感到庆幸它们的存在 (并且为自己阅读了本指南高兴!).</p>
+<h3 id="可调用对象"><a href="#可调用对象" class="headerlink" title="可调用对象"></a>可调用对象</h3><p>在Python中，一个特殊的魔法方法可以让类的实例的行为表现的像函数一样，你可以调用它们，将一个函数当做一个参数传到另外一个函数中等等。这是一个非常强大的特性，其让Python编程更加舒适甜美。<br><strong>__call__(self, [args…]):</strong><br>允许一个类的实例像函数一样被调用。实质上说，这意味着 x() 与 x.__call__() 是相同的。注意 __call__ 的参数可变。这意味着你可以定义 __call__ 为其他你想要的函数，无论有多少个参数。<br>__call__ 在那些类的实例经常改变状态的时候会非常有效。“调用”这个实例是一种改变这个对象状态的直接和优雅的做法。</p>
+<h3 id="会话管理器"><a href="#会话管理器" class="headerlink" title="会话管理器"></a>会话管理器</h3><p>在Python 2.5中，为了代码重用而新定义了一个关键字with，其也就带来了一种with语句。会话管理在Python中并不罕见（之前是作为库的一部分而实现的），不过直到PEP 343被接受后，其就作为了一种一级语言结构。你也许在之前看到过这样的语句：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with open(&apos;foo.txt&apos;) as bar:</span><br><span class="line">    # 执行一些针对bar的操作</span><br></pre></td></tr></table></figure>
+<p>会话管理器通过包装一个with语句来设置和清理相应对象的行为。会话管理器的行为通过两个魔方方法来决定:<br><strong>__enter__(self):</strong><br>定义了当使用with语句的时候，会话管理器在块被初始创建事要产生的行为。请注意，__enter__的返回值与with语句的目标或者as后的名字绑定。</p>
+<p><strong>__exit__(self, exception_type, exception_value, traceback):</strong><br>定义了当一个代码块被执行或者终止后，会话管理器应该做什么。它可以被用来处理异常、执行清理工作或做一些代码块执行完毕之后的日常工作。如果代码块执行成功，exception_type，exception_value，和traceback将会为None。否则，你可以选择处理这个异常或者是直接交给用户处理。如果你想处理这个异常的话，请确保<strong>exit</strong>在所有语句结束之后返回True。如果你想让异常被会话管理器处理的话，那么就让其产生该异常。   </p>
+<p>__enter__和__exit__对于那些定义良好以及有普通的启动和清理行为的类是很有意义的。你也可以使用这些方法来创建一般的可以包装其它对象的会话管理器。下面是一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Closer:</span><br><span class="line">    &apos;&apos;&apos;通过with语句和一个close方法来关闭一个对象的会话管理器。&apos;&apos;&apos;</span><br><span class="line"></span><br><span class="line">    def __init__(self, obj):</span><br><span class="line">        self.obj = obj</span><br><span class="line"></span><br><span class="line">    def __enter__(self):</span><br><span class="line">        return self.obj # bound to target</span><br><span class="line"></span><br><span class="line">    def __exit__(self, exception_type, exception_val, trace):</span><br><span class="line">        try:</span><br><span class="line">           self.obj.close()</span><br><span class="line">        except AttributeError: # obj isn&apos;t closable</span><br><span class="line">           print &apos;Not closable.&apos;</span><br><span class="line">           return True # exception handled successfully</span><br></pre></td></tr></table></figure>
+<h3 id="描述对象"><a href="#描述对象" class="headerlink" title="描述对象"></a>描述对象</h3><p>描述器是通过获取、设置以及删除的时候被访问的类。当然也可以改变其它的对象。描述器并不是独立的。相反，它意味着被一个所有者类持有。当创建面向对象的数据库或者类，里面含有相互依赖的属相时，描述器将会非常有用。一种典型的使用方法是用不同的单位表示同一个数值，或者表示某个数据的附加属性（比如坐标系上某个点包含了这个点到原点的距离信息）。<br>为了成为一个描述器，一个类必须至少有__get__，__set__，__delete__方法被实现，让我们看看这些魔法方法：</p>
+<p><strong>__get__(self, instance, owner):</strong><br>定义了当描述器的值被取得的时候的行为。instance是拥有该描述器对象的一个实例。owner是拥有者本身。<br><strong>__set__(self, instance, value):</strong><br>定义了当描述器的值被改变的时候的行为。instance是拥有该描述器类的一个实例。value是要设置的值。<br><strong>__delete__(self, instance):</strong><br>定义了当描述器的值被删除的时候的行为。instance是拥有该描述器对象的一个实例。  </p>
+<h3 id="考拷贝对象"><a href="#考拷贝对象" class="headerlink" title="考拷贝对象"></a>考拷贝对象</h3><p>有时候，尤其是当你在处理可变对象时，你可能想要复制一个对象，然后对其做出一些改变而不希望影响原来的对象。这就是Python的copy所发挥作用的地方。然而（幸运的是），Python的模块并不是“感性”的，所以我们没必要担心一个基于Linux的机器会突然开始工作，但是我们确实需要告诉Python如何高效地复制一些东西。<br><strong>__copy__(self):</strong><br>定义了当对你的类的实例调用copy.copy()时所产生的行为。copy.copy()返回了你的对象的一个浅拷贝——这意味着，当实例本身是一个新实例时，它的所有数据都被引用了——例如，当一个对象本身被复制了，它的数据仍然是被引用的（因此，对于浅拷贝中数据的更改仍然可能导致数据在原始对象的中的改变）。<br><strong>__deepcopy__(self, memodict={}):</strong><br>定义了当对你的类的实例调用copy.deepcopy()时所产生的行为。copy.deepcopy()返回了你的对象的一个深拷贝——对象和其数据都被拷贝了。memodict是对之前被拷贝的对象的一个缓存——这优化了拷贝过程并且阻止了对递归数据结构拷贝时的无限递归。当你想要进行对一个单独的属性进行深拷贝时，调用copy.deepcopy()，并以memodict为第一个参数。      </p>
+<p>其实还有很多魔术方法没有说，实在太多了，就总结到这吧。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/13/Linux-notes-Shutdown-and-restart /" rel="next" title="Linux笔记-关机和重启">
+                <i class="fa fa-chevron-left"></i> Linux笔记-关机和重启
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/12/30/Iterators-and-Generators/" rel="prev" title="Iterators和Generators">
+                Iterators和Generators <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造和初始化"><span class="nav-number">1.</span> <span class="nav-text">构造和初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#比较魔术方法"><span class="nav-number">2.</span> <span class="nav-text">比较魔术方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数学运算符"><span class="nav-number">3.</span> <span class="nav-text">数学运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#增量运算"><span class="nav-number">4.</span> <span class="nav-text">增量运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换"><span class="nav-number">5.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表达你的类"><span class="nav-number">6.</span> <span class="nav-text">表达你的类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义序列"><span class="nav-number">7.</span> <span class="nav-text">自定义序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#反射"><span class="nav-number">8.</span> <span class="nav-text">反射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可调用对象"><span class="nav-number">9.</span> <span class="nav-text">可调用对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#会话管理器"><span class="nav-number">10.</span> <span class="nav-text">会话管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#描述对象"><span class="nav-number">11.</span> <span class="nav-text">描述对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#考拷贝对象"><span class="nav-number">12.</span> <span class="nav-text">考拷贝对象</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = '2015/11/11/Python-magic-method-summary/';
+      var disqus_title = 'Python的魔术方法总结';
+      var disqus_url = 'http://noble4cc.me/2015/11/11/Python-magic-method-summary/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

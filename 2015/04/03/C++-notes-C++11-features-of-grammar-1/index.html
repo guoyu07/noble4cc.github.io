@@ -1,0 +1,689 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C++," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="C++11，想必大家已经不太陌生了吧。就连许多搞java的同学都对它有所耳闻。c++11是c++标注委员会在2011年出台的新的c++标准。他拥有了诸多新的革命性的特性，全面提升c++这把利剑的战斗力，甚至更有人说，c++11简直就像一门新的语言。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++笔记-C++11新特性之语法篇一">
+<meta property="og:url" content="http://noble4cc.me/2015/04/03/C++-notes-C++11-features-of-grammar-1/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="C++11，想必大家已经不太陌生了吧。就连许多搞java的同学都对它有所耳闻。c++11是c++标注委员会在2011年出台的新的c++标准。他拥有了诸多新的革命性的特性，全面提升c++这把利剑的战斗力，甚至更有人说，c++11简直就像一门新的语言。">
+<meta property="og:updated_time" content="2016-04-16T06:07:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++笔记-C++11新特性之语法篇一">
+<meta name="twitter:description" content="C++11，想必大家已经不太陌生了吧。就连许多搞java的同学都对它有所耳闻。c++11是c++标注委员会在2011年出台的新的c++标准。他拥有了诸多新的革命性的特性，全面提升c++这把利剑的战斗力，甚至更有人说，c++11简直就像一门新的语言。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> C++笔记-C++11新特性之语法篇一 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C++笔记-C++11新特性之语法篇一
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-04-03T01:20:00+08:00" content="2015-04-03">
+              2015-04-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/04/03/C++-notes-C++11-features-of-grammar-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/04/03/C++-notes-C++11-features-of-grammar-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>C++11，想必大家已经不太陌生了吧。就连许多搞java的同学都对它有所耳闻。c++11是c++标注委员会在2011年出台的新的c++标准。他拥有了诸多新的革命性的特性，全面提升c++这把利剑的战斗力，甚至更有人说，c++11简直就像一门新的语言。<br><a id="more"></a></p>
+<h3 id="C-的历史"><a href="#C-的历史" class="headerlink" title="C++的历史"></a>C++的历史</h3><p>首先我们来回顾一下c++的历史（老生常谈，不愿看的跳过）。提起c++，大家首先会想到c语言。是的，c++兼容c语言。由于C语言语法限定的问题，不能使用面向对象的许多特性，这就催生了新语言的产生。<code>C with Class</code>:出现在C语言发展到顶峰时，是C++最早的版本，在C语言中增加class关键字和类;又经过了一段时间的发展，牛叉的贝尔实验室重要在1983年推出了革命性的语言，并将语言命名为c++。这需要吐槽的是，c++虽然诞生在1983年，但是第一个标准是在1998年制定的，虽然这期间c++发生了翻天覆地的变化。第一个c++标准版本叫做c++98，以后五年更新一次。在2003年，c++标准委员会发布了具有小幅更新的c++03.但是主要是修改BUG，没有太多语言特性的变化。按理说c++的下一个版本应该在2008年发布，但由于一些原因吧（可能是标准委员会的效率太低），c++新版本在2011年正式投票通过，推出了革命性的c++11.在2014年，标准委员会又放了小招，发布了C++14。<br>下一个版本计划在2017年发布（只是计划哦…）。  </p>
+<h3 id="语法特性"><a href="#语法特性" class="headerlink" title="语法特性"></a>语法特性</h3><p>C++11新特性十分强大，主要有：auto、nullptr、范围的for循环、Override和final、强类型枚举、智能指针、Lambdas表达式、非成员begin()和end()、Move、static_assert….下面我们就简单介绍一下。<br><code>注意：c++11需要编译器支持，gcc需要4.8.1及以上，clang需要3.3及以上，vc一直支持不是太好，但是也已经支持绝大部分了，要想使用更多的c++11特性的话，建议下载最新的vs2013</code></p>
+<p><strong>auto</strong><br>auto自动类型推断，用于从初始化表达式中推断出变量的数据类型。通过auto的自动类型推断，可以大大简化我们的编程工作。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> a = <span class="number">10</span>;  </span><br><span class="line"><span class="keyword">auto</span> c = <span class="string">'A'</span>;  </span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">s</span><span class="params">(<span class="string">"你好"</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">func</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：  </p>
+<ul>
+<li>我们可以使用valatile，pointer（*），reference（&amp;），rvalue reference（&amp;&amp;） 来修饰auto</li>
+<li>用auto声明的变量必须初始化</li>
+<li>auto不能与其他类型组合连用</li>
+<li>函数和模板参数不能被声明为auto</li>
+<li>定义在堆上的变量，使用了auto的表达式必须被初始化</li>
+<li>以为auto是一个占位符，并不是一个他自己的类型，因此不能用于类型转换或其他一些操作，如sizeof和typeid</li>
+<li>定义在一个auto序列的变量必须始终推导成同一类型</li>
+<li>auto不能自动推导成CV-qualifiers（constant &amp; volatile qualifiers），除非被声明为引用类型</li>
+<li>auto会退化成指向数组的指针，除非被声明为引用</li>
+</ul>
+<p><strong>nullptr</strong><br>说起nullptr，不能不说NULL，我们想只要写过c/c++的程序员一定不会陌生NULL，他不是什么关键字，其实是一个宏：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//在标准c中</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL (void*)0  </span></span><br><span class="line"><span class="comment">//在c++98中</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> NULL  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> __cplusplus  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL    0  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NULL    ((void *)0)  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span>  </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>在C中是0地址，在c++中其实就是0<br>nullptr简单来说就是空或者说空指针，熟悉java或者c#的同学肯定不会陌生null这个关键字，其实nullptr和null的作用差不多。因为c++用0指代空指针，容易转换成整形，但使用nullptr就不存在这个问题，nullptr可以转换成任何指针类型，也可以转换成bool类型，但是不能隐式转换成整形。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">char</span>* c)</span></span>&#123;&#125;</span><br><span class="line">func(<span class="literal">nullptr</span>);</span><br><span class="line"><span class="keyword">bool</span> b=<span class="literal">nullptr</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>范围for循环</strong><br>为了在遍历容器时支持”foreach”用法，C++11扩展了for语句的语法。用这个新的写法，可以遍历C类型的数组、初始化列表以及任何重载了非成员的begin()和end()函数的类型。 因为我们写begin()和end()时，实在是太繁琐了。<br>如果只是想迭遍历一个容器的话，而不关心下标、迭代器位置或者元素个数，那么这种foreach的for循环将会非常有用。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> i:v)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">cout</span>&lt;&lt;i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>override和final</strong><br>在以前的c++版本当中，我们无法有效的让派生类一定重写基类中的虚函数，或者有时候一些不经意的错误会使重写基类函数失败。或者某个方法不应该重写，不经意间重写了该函数，这都是很令人头痛的问题。好在现在的c++版本有了新的特性。<br>override：表示派生类应中的函数该重写基类中函数。<br>final：表示派生类不应该重写该函数。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> A</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">int</span>)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">class</span> B: <span class="keyword">public</span> A</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">long</span>)</span> override</span>&#123;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">char</span>)</span> final</span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//如果这样做的话会报错，因为A中没有一个func(int) 函数让B重写</span></span><br><span class="line"><span class="keyword">class</span> C:<span class="keyword">public</span> B</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">(<span class="keyword">char</span>)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//如果这样做也会报错，因为B中的func(char)函数允许子类重写</span></span><br></pre></td></tr></table></figure>
+<p><strong>强类型枚举</strong><br>在以前的c++版本中枚举类型是直接暴露在外部作用域中的，而且会默认隐式转换成整形，而且可以直接可以整形进行比较，使用起来不经意间就出现问题，并且在同个作用域中是不能定义相同的枚举常量的，比如这样会引起编译报错：<br>enum A{a,b,c}; enum B{b,c,d};<br>在C++11中引入了强类型的枚举类型，由enum class 类型名 来创建强类型枚举。这种强类型没枚举不会隐式转换成整形，也不会直接暴露在作用域中，并且传统枚举和强类型枚举都可以用户自定义枚举的类型，当然默认是整形的。强类型枚举是不能和整形直接进行比较的会引起编译错误。  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> <span class="keyword">class</span> NewEnum:<span class="keyword">long</span> &#123;<span class="comment">//可以指定枚举常量的类型</span></span><br><span class="line">    e1,e2=<span class="number">100</span>,e3,e4</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">enum</span> Enum:<span class="keyword">long</span>&#123;</span><br><span class="line">    e1,e2=<span class="number">100</span>,e3,e4</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">NewEnum e1=NewEnum::e1;<span class="comment">//定义强类型枚举</span></span><br><span class="line"><span class="keyword">int</span> a=NewEnum::e1;<span class="comment">//这样写编译是会报错的，强类型枚举不能转换成整形</span></span><br><span class="line"><span class="keyword">int</span> b=Enum::e1;<span class="comment">//传统类型枚举可以转换成整形</span></span><br><span class="line">Enum e2=Enum::e1;<span class="comment">//强类型枚举不能转换成整形</span></span><br><span class="line"><span class="keyword">int</span> c=e2;<span class="comment">//传统类型可以转换成整形</span></span><br><span class="line">Enum e3=e4;</span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;e1&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//这样写会报错，因为e1不能转换成整形，不能直接打印</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;e3&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//传统枚举可以直接打印</span></span><br></pre></td></tr></table></figure>
+<p><strong>Lambda表达式</strong><br>lambda表达式也叫做匿名函数，其实这在很多函数式编程语言中很常见，而且最新的Java8也开始支持lambda表达式了，C#支持的更早了一些。可见lambda表达式是现代编程语言中很重要的一个特性，有了它你可以使用函数对象和函子，使得其他特性和类库可以实现。以前C++版本要想传递一个函数，一般是用函数指针，可是函数指针用起来繁琐，而且很容易出错，为了简化操作，神奇的匿名函数就登场了<br>lambda基本语法：<br><code>[捕获列表](形参) mutable或exception声明 -&gt;返回值类型 {函数体}</code><br>下面我们解释一下：  </p>
+<ul>
+<li>捕获列表：从当前作用域中捕获变量供表达式使用，如果不加mutable捕获的变量是无法改变的</li>
+<li>形参：和函数一样，不多说了，没有形参可以省略()</li>
+<li>返回值类型：如果分返值可以经过类型推导出来可以不用添加</li>
+<li>函数体：无需在语言</li>
+</ul>
+<p>具体说说捕获列表：<br>lambda表达式中可以获取（捕获）它所在作用域中的变量值，并且有两种捕获方式：引用和值。我们可以在捕获列表中设置各变量的捕获方式。如果没有设置捕获列表，lambda默认不能捕获任何的变量,使用=作为值捕获的标示，使用&amp;作为引用的捕获，默认是以值捕获。变量之间用逗号分隔，比如 ：</p>
+<ul>
+<li>[a,&amp;b] a变量以值的方式呗捕获，b以引用的方式被捕获。</li>
+<li>[this] 以值的方式捕获 this 指针。</li>
+<li>[&amp;] 以引用的方式捕获所有的外部自动变量。</li>
+<li>[=] 以值的方式捕获所有的外部自动变量。</li>
+<li>[] 不捕获外部的任何变量。<br>示例代码：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	<span class="built_in">string</span> s=<span class="string">"hello lambda"</span>;</span><br><span class="line">    <span class="keyword">int</span> n=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">auto</span> lam=[s,&amp;n]()-&gt;<span class="keyword">void</span>&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;s&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        n=<span class="number">1</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    lam();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;n&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于篇幅问题（写多了也不爱看），本篇就写到这，剩下的将会陆续更新</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag">#C++</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/03/13/Linux-notes-the-input-and-output-redirection/" rel="next" title="Linux笔记-输入输出重定向">
+                <i class="fa fa-chevron-left"></i> Linux笔记-输入输出重定向
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/09/C-notes--C-11-new-features-of-the-standard-library/" rel="prev" title="C++笔记-C++11新特性之标准库">
+                C++笔记-C++11新特性之标准库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-的历史"><span class="nav-number">1.</span> <span class="nav-text">C++的历史</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法特性"><span class="nav-number">2.</span> <span class="nav-text">语法特性</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = '2015/04/03/C++-notes-C++11-features-of-grammar-1/';
+      var disqus_title = 'C++笔记-C++11新特性之语法篇一';
+      var disqus_url = 'http://noble4cc.me/2015/04/03/C++-notes-C++11-features-of-grammar-1/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

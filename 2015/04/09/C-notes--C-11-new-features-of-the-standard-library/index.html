@@ -1,0 +1,672 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="C++," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="说起标准库，说起C++标准库，我们想每一位C++初学者一定会感想，C++你为何如此骨感（是走萝莉路线吗）。不只一次的吐槽过，没有网络库，没有多线程，没有图形库，没有…好在C++从来就不缺少第三方的类库，比如网络库的ACE，net-lib,图形的Qt，wxwidgets，还有瑞士军刀型的Boost。但是第三方的库质量参差不齐，使用起来不如标准库方便。令人欣喜的是C++11本次更新不光是语法上了，标准">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++笔记-C++11新特性之标准库">
+<meta property="og:url" content="http://noble4cc.me/2015/04/09/C-notes--C-11-new-features-of-the-standard-library/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="说起标准库，说起C++标准库，我们想每一位C++初学者一定会感想，C++你为何如此骨感（是走萝莉路线吗）。不只一次的吐槽过，没有网络库，没有多线程，没有图形库，没有…好在C++从来就不缺少第三方的类库，比如网络库的ACE，net-lib,图形的Qt，wxwidgets，还有瑞士军刀型的Boost。但是第三方的库质量参差不齐，使用起来不如标准库方便。令人欣喜的是C++11本次更新不光是语法上了，标准">
+<meta property="og:updated_time" content="2016-04-16T06:07:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C++笔记-C++11新特性之标准库">
+<meta name="twitter:description" content="说起标准库，说起C++标准库，我们想每一位C++初学者一定会感想，C++你为何如此骨感（是走萝莉路线吗）。不只一次的吐槽过，没有网络库，没有多线程，没有图形库，没有…好在C++从来就不缺少第三方的类库，比如网络库的ACE，net-lib,图形的Qt，wxwidgets，还有瑞士军刀型的Boost。但是第三方的库质量参差不齐，使用起来不如标准库方便。令人欣喜的是C++11本次更新不光是语法上了，标准">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> C++笔记-C++11新特性之标准库 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                C++笔记-C++11新特性之标准库
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2015-04-09T14:22:00+08:00" content="2015-04-09">
+              2015-04-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/04/09/C-notes--C-11-new-features-of-the-standard-library/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2015/04/09/C-notes--C-11-new-features-of-the-standard-library/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>说起标准库，说起C++标准库，我们想每一位C++初学者一定会感想，C++你为何如此骨感（是走萝莉路线吗）。不只一次的吐槽过，没有网络库，没有多线程，没有图形库，没有…好在C++从来就不缺少第三方的类库，比如网络库的ACE，net-lib,图形的Qt，wxwidgets，还有瑞士军刀型的Boost。但是第三方的库质量参差不齐，使用起来不如标准库方便。令人欣喜的是C++11本次更新不光是语法上了，标准库也丰富了许多。本次我们讲究来初步了解一下C++11新增加的标准库。<br><a id="more"></a><br>虽然新增加的不少类库，但是还是没有我们翘首以盼的网络库，具体原因吧请参看<a href="https://www.zhihu.com/question/22901804" target="_blank" rel="external">为何C++11与1y都没有将network功能优先加入标准库？</a>,各路大神们已经分析的很好了。至于图形库的方面，我们现在也不期待了，毕竟C++的图形库有很多重量级的产品，而且各家平台都有自己的亲儿子。可是相比丰满的java和C#还是落后一大截，希望标准委员会的老爷们加快点速度（C++最短5年已更新，实在是慢了）。    </p>
+<p><strong>智能指针</strong><br>在C++11之前想必大家就已经知道了智能指针的大名了吧，在意不用手动释放内存了（玩笑哦，不要当真，但是智能指针真的简化了大家的操作）。在之前的tr1和大名鼎鼎的boost中都智能指针的内容，这里我们不再做太多的赘述，网上搜索一大堆资料。简单说说新增到std中的三个智能指针。  </p>
+<ul>
+<li>unique_ptr: 如果内存资源的所有权不需要共享，就应当使用这个（它没有拷贝构造函数），但是它可以转让给另一个unique_ptr（存在move构造函数）。</li>
+<li>shared_ptr: 如果内存资源需要共享，那么使用这个（所以叫这个名字）。</li>
+<li>weak_ptr: 持有被shared_ptr所管理对象的引用，但是不会改变引用计数值。它被用来打破依赖循环（想象在一个tree结构中，父节点通过一个共享所有权的引用(chared_ptr)引用子节点，同时子节点又必须持有父节点的引用。如果这第二个引用也共享所S有权，就会导致一个循环，最终两个节点内存都无法释放）。<br>另外auto_ptr已经废弃了，推荐大家是使用了。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> sp=shared_ptr_test();</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*sp&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//打印所指向的对象</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*sp.get()&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//获得裸指针</span></span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; sp2;</span><br><span class="line">    sp2=sp;<span class="comment">//取代管理的对象，引用计数加1</span></span><br><span class="line">    sp.reset();<span class="comment">//引用计数减1</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">unique_ptr</span>&lt;<span class="keyword">int</span>&gt; up(new <span class="keyword">int</span>(<span class="number">888</span>));</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*up&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">//无法进行复制构造，也无法进行复制赋值操作。也就是说，我们无法得到指向同一个对象的两个unique_ptr。</span></span><br><span class="line">    <span class="comment">//但是可以进行移动构造和移动赋值操作，以下这样操作会造成编译错误</span></span><br><span class="line">    <span class="comment">//    unique_ptr&lt;int&gt; up2(up);</span></span><br><span class="line">    <span class="comment">//    up2=up;</span></span><br><span class="line">    <span class="comment">//up.reset();//取代管理的对象</span></span><br><span class="line">    <span class="keyword">int</span>* j=up.get();<span class="comment">//返回一个指针，指向被管理对象</span></span><br><span class="line">    <span class="keyword">int</span>* i=up.release();<span class="comment">//返回一个指针，指向被管理对象，并释放所有权</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*j&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//weak_ptr是为配合shared_ptr而引入的一种智能指针来协助shared_ptr工作，</span></span><br><span class="line">    <span class="comment">//它可从一个shared_ptr或另一个weak_ptr对象构造，它的构造和析构不会引起引用记数的增加或减少。</span></span><br><span class="line">    <span class="comment">//没有重载*和-&gt;但可以使用lock获得一个可用的shared_ptr对象</span></span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;<span class="keyword">int</span>&gt; sp3(new <span class="keyword">int</span>(<span class="number">777</span>));</span><br><span class="line">    weak_ptr&lt;<span class="keyword">int</span>&gt; wp(sp3);</span><br><span class="line">    <span class="keyword">if</span>(!wp.expired())<span class="comment">//</span></span><br><span class="line">    &#123;</span><br><span class="line">       <span class="keyword">auto</span> t=wp.lock();<span class="comment">//获得一个share_ptr对象</span></span><br><span class="line">       <span class="built_in">cout</span>&lt;&lt;wp.use_count()&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//观测引用计数</span></span><br><span class="line">        *t=<span class="number">666</span>;<span class="comment">//改变所指对象的值，sp3中的也改变</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*sp3&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>正则表达式</strong><br>正则表达式功能强大，使用方便，但是C++以前的版本并不支持正则表达式（再次吐槽一下C++的标准库，真是少的可怜~~~），好在现在的版本已经支持正则表达式了，其实很简单的，不过各家的编译器对正则表达式支持的真心的不好，GCC好像要到4.9及以上可以完美支持。VC没有测试，建议使用最新的。使用正则表达式要引入头文件 “<code>regex</code>“</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * regex_match()只有在整个字符串匹配正则表达式时才返回 true, 而 regex_search()在子串匹配就返回 true.</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">string</span> email=<span class="string">"username@domain.com"</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">regex <span class="title">pattern</span><span class="params">(<span class="string">"(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::regex_match(email,pattern)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::regex_search(email,pattern)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>多线程</strong><br>在当今程序设计中，多线程可以说是及其常见，我们利用新开的线程可以大大提高效率，提高CPU的利用率，可是让人惊讶的是C++在以前的标准库中竟然没有支持多线程操作。再次真心吐槽。好在C++11为我们提供了多线程的支持。多线程的知识其实是很庞大的，我们这里只做简单的介绍，有兴趣 的同学可以查看C++11的标准文档。<br>我们在使用c++11的线程时主要使用std::thread,还有std::this_thread命名空间内的函数。<br>如果我们需要线程安全的话，我们还需要mutex头文件下的各种互斥量  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iosrteam&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="built_in">std</span>::mutex mtx;<span class="comment">//互斥变量</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="built_in">string</span> info)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    mtx.lock();<span class="comment">//加锁</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;info&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"this thread id："</span>&lt;&lt;this_thread::get_id()&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//获得当前线程的id</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"sleeping"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    this_thread::sleep_for(<span class="built_in">std</span>::chrono::seconds(rand() % <span class="number">3</span>));<span class="comment">//书面一段时间，sleep_until()是睡眠至一个时间点</span></span><br><span class="line">    mtx.unlock();<span class="comment">//解锁</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">th1</span><span class="params">(func,<span class="string">"th1:"</span>)</span></span>;<span class="comment">//创建一个thread变量，并且传入参数，thread的构造方法是可变参数的，</span></span><br><span class="line">    <span class="comment">//可以传入多个变量，这几个变量会依次传入第一个函数</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">th2</span><span class="params">(func,<span class="string">"th2:"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="function">thread <span class="title">th3</span><span class="params">(func,<span class="string">"th3:"</span>)</span></span>;</span><br><span class="line">    th1.detach();<span class="comment">//允许执行该方法的线程脱离其线程对象而继续独立执行,也就是非阻塞</span></span><br><span class="line">    th2.detach();</span><br><span class="line">    th3.join();<span class="comment">//调用将使调用线程，一直处于阻塞状态</span></span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>array数组</strong><br>array其实就是数组，而且是固定大小的数组，与一般的数组一样，效率很高，比如array和普通的T arr[N]是一样的。只不过array具有标准C++容器应该具有的特性，比如大小，迭代等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;array&gt;</span><br><span class="line">using namespce std;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	array&lt;int,3&gt; arr=&#123;1,2,3&#125;;//创建一个大小为3的数组</span><br><span class="line">    for(auto i:arr)//遍历元素</span><br><span class="line">        cout&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">    for(auto iter=arr.begin();iter!=arr.end();++iter)//迭代器进行遍历元素</span><br><span class="line">        cout&lt;&lt;*iter&lt;&lt;endl;</span><br><span class="line">    arr[0]=4;//改变第一个元素的值</span><br><span class="line">    cout&lt;&lt;arr[0]&lt;&lt;endl;</span><br><span class="line">    cout&lt;&lt;arr.size()&lt;&lt;endl;//arr数组的大小</span><br><span class="line">    cout&lt;&lt;arr.at(1)&lt;&lt;endl;//打印第2的元素</span><br><span class="line">    cout&lt;&lt;arr.front()&lt;&lt;endl;//打印头部的元素</span><br><span class="line">    cout&lt;&lt;arr.end()&lt;&lt;endl;//打印尾部的元素	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>元组类型</strong><br>C++11中有了元组，其实元组的概念我想大家并不陌生，其实在C#中也存在着相同的概念。简单来说元组就是 是一个固定大小的异构值的集合。这是一般化的 std::pair。也就说，它是一个容器，里面可以放任何类型的变量。就像一个结构体一样，只是我们不需要在定义结构体。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;tuple&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">	 <span class="comment">/* 相当于创建了一个结构体</span><br><span class="line">     * struct tuple1</span><br><span class="line">     * &#123;</span><br><span class="line">     *  int i;</span><br><span class="line">     *  char c;</span><br><span class="line">     *  string str;</span><br><span class="line">     * &#125;</span><br><span class="line">     *</span><br><span class="line">     */</span></span><br><span class="line">    tuple&lt;<span class="keyword">int</span>,<span class="keyword">char</span>,<span class="built_in">string</span>&gt; tuple1;<span class="comment">//创建一个元组对象</span></span><br><span class="line">    tuple1=make_tuple(<span class="number">1</span>,<span class="string">'c'</span>,<span class="string">"hello"</span>);<span class="comment">//构造一个元组对象</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::get&lt;<span class="number">0</span>&gt;(tuple1)&lt;&lt;<span class="built_in">endl</span>;<span class="comment">//打印元组的第一个元素</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::get&lt;<span class="number">1</span>&gt;(tuple1)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::get&lt;<span class="number">2</span>&gt;(tuple1)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> tuple2= make_tuple(<span class="number">1</span>,<span class="string">'c'</span>,<span class="string">"hello"</span>);</span><br><span class="line">    <span class="keyword">int</span> i;<span class="keyword">char</span> c;<span class="built_in">string</span> str;</span><br><span class="line">    <span class="built_in">std</span>::tie(i,c,str)=tuple2;<span class="comment">//进行解包</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;c&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;str&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>散列表</strong><br>散列表也叫做哈希表，使用哈希函数计算元素的存储位置的一种数据结构，我们在上数据结构课中应该都学过。但是C++在很长的一段时间内是没有哈希表的，我们平常所用的map和set和java中的hashMap和hashSet不是一样的，java中的前面有个hash，底层实现就是哈希。C++中的map和set底层实际是红黑树，虽然用起来很像，但是有本质上的区别的。至于为什么STL中没有加入哈希表，传言可能是当时的STL标准发布时哈希表还没有完成，但是我们在boost和tr1中都能发现哈希表的身影，C++11标准中的哈希表其实是boost中的unordered_map和unorder_set。C++中的哈希map、set和普通的map、set使用几乎相同，其他只是底层实现不太一样。<code>map插入和删除的时间复杂度是logn，哈希map、set的时间复杂度是1。另外哈希map和set是无序的map和set是有序的。</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unordered_map&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unordered_set&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="built_in">unordered_map</span>&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt; <span class="built_in">map</span>;</span><br><span class="line">    <span class="built_in">unordered_set</span>&lt;<span class="built_in">string</span>&gt; <span class="built_in">set</span>;</span><br><span class="line">    <span class="built_in">unordered_multimap</span>&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt; <span class="built_in">multimap</span>;<span class="comment">//允许插入的数据是重复的，其他的都与unordered_map相同</span></span><br><span class="line">    <span class="built_in">unordered_multiset</span>&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt; <span class="built_in">multiset</span>;<span class="comment">//允许插入数据重复，其他与unordered_set相同</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">map</span>.insert(pair&lt;<span class="built_in">string</span>,<span class="built_in">string</span>&gt;(<span class="string">"hello"</span>,<span class="string">"world"</span>));</span><br><span class="line">    <span class="built_in">set</span>.insert(<span class="string">"hello"</span>);</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">map</span>[<span class="string">"hello"</span>]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;*<span class="built_in">set</span>.find(<span class="string">"hello"</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>可扩展的随机数</strong><br>以前C++产生随机数是使用了rand()和srand()两个标准函数，现在C++11中的随机函数变得有些复杂了，这里我们也只做演示。新增了标准库random_device类，不用添加随机种子，在Linux和UNIX下使用的是/dev/random。在windows下使用的rand_s来产生随机数。并且添加了随机数引擎。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostram&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="function">random_device <span class="title">rd</span><span class="params">(<span class="string">"/dev/random"</span>)</span></span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Minimum:"</span>&lt;&lt;rd.min()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Maximum:"</span>&lt;&lt;rd.max()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Entropy:"</span>&lt;&lt;rd.entropy()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"Random:"</span>&lt;&lt;rd()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    default_random_engine random_engine;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; ++i) &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;random_engine()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>时间类型</strong><br>c++11提供了日期时间相关的库chrono，通过chrono相关的库我们可以很方便的处理日期和时间。c++11还提供了字符串的宽窄转换功能，也提供了字符串和数字的相互转换的库。有了这些库提供的便利的工具类，我们能方便的处理日期和时间相关的转换和格式输出。<br>主要添加了这三个部分：<br><code>duratrion</code><br>顾名思义是时间间隔的意思。可以表示几分钟，几秒或者几个小时等等。他是个模板，原型是：<br>template&gt; class duration;<br>有两个参数，rep表示这段间隔所含时钟的个数，period表示一个时钟的周期是多少，单位是秒。<br>我们需要说一下这个模板<br>template class ratio;<br>简单来讲他是我们数学上的分数，Num是分子，Denom是分母，分数也是一个数字，这个分数的大小就是一个周期大小。<br><code>time_point</code><br>time_point表示一个时间点，用来获取1970.1.1以来的秒数和当前的时间, 可以做一些时间的比较和算术运算，可以和ctime库结合起来显示时间。time_point必须要clock来计时，time_point有一个函数time_since_epoch()用来获得1970年1月1日到time_point时间经过的duration。<br><code>clock</code><br>表示当前的系统时钟，内部有time_point, duration, Rep,  Period等信息，它主要用来获取当前时间，以及实现time_t和time_point的相互转换。Clocks包含三种时钟：  </p>
+<ul>
+<li>system_clock：从系统获取的时钟；  </li>
+<li>steady_clock：不能被修改的时钟；  </li>
+<li>high_resolution_clock：高精度时钟，实际上是system_clock或者steady_clock的别名。<br>可以通过now()来获取当前时间点：  </li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iosrteam&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ratio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iomanip&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>::chrono;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="function">hours <span class="title">h</span><span class="params">(<span class="number">1</span>)</span></span>;<span class="comment">//1小时</span></span><br><span class="line">    <span class="function">minutes <span class="title">m</span><span class="params">(<span class="number">10</span>)</span></span>;<span class="comment">//10分钟</span></span><br><span class="line">    <span class="function">seconds <span class="title">s</span><span class="params">(<span class="number">100</span>)</span></span>;<span class="comment">//100秒</span></span><br><span class="line">    <span class="function">milliseconds <span class="title">ms</span><span class="params">(<span class="number">1000</span>)</span></span>;<span class="comment">//1000毫秒</span></span><br><span class="line">    <span class="function">microseconds <span class="title">mcs</span><span class="params">(<span class="number">1000</span>)</span></span>;<span class="comment">//1000微秒</span></span><br><span class="line">    <span class="function">nanoseconds <span class="title">ns</span><span class="params">(<span class="number">1000</span>)</span></span>;<span class="comment">//1000纳秒</span></span><br><span class="line">    <span class="comment">//获得当前时间</span></span><br><span class="line">    time_point&lt;system_clock,duration&lt;<span class="keyword">int</span>,ratio&lt;<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>&gt;&gt;&gt; tpNow=time_point_cast&lt;duration&lt;<span class="keyword">int</span>,ratio&lt;<span class="number">60</span>*<span class="number">60</span>*<span class="number">24</span>&gt;&gt;&gt;(system_clock::now());</span><br><span class="line">    <span class="comment">//获得当前时间从1970.1.1经过的天数</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;tpNow.time_since_epoch().count()&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="comment">//将当前的系统时间装换成ctime类型</span></span><br><span class="line">    <span class="keyword">time_t</span> time=system_clock::<span class="keyword">to_time_t</span>(system_clock::now());<span class="comment">//system_clock::now()获得当前的系统时间</span></span><br><span class="line">    <span class="comment">//使用put_time将时间格式化输出该函数位于iomanip头文件</span></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt; put_time(<span class="built_in">std</span>::localtime(&amp;time), <span class="string">"%Y-%m-%d %X"</span>)&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    return <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag">#C++</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/04/03/C++-notes-C++11-features-of-grammar-1/" rel="next" title="C++笔记-C++11新特性之语法篇一">
+                <i class="fa fa-chevron-left"></i> C++笔记-C++11新特性之语法篇一
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/04/16/Linux-note--Linux-disk-management/" rel="prev" title="Linux笔记-Linux的磁盘管理">
+                Linux笔记-Linux的磁盘管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <p class="post-toc-empty">This post does not have a Table of Contents</p>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = '2015/04/09/C-notes--C-11-new-features-of-the-standard-library/';
+      var disqus_title = 'C++笔记-C++11新特性之标准库';
+      var disqus_url = 'http://noble4cc.me/2015/04/09/C-notes--C-11-new-features-of-the-standard-library/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

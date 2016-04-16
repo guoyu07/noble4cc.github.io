@@ -1,0 +1,783 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+  
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="许多初学Python的同学总是在问一个问题，是该学习Python2还是该学习Python3。许多对这个问题的回答经常是：仅仅学习你就喜欢的版本之后再找出之间的不同就可以了。但是如果你开发一个新的项目该如何选择版本呢？只要Python2和Python都支持你所需要的类库，没有什么正确和错误的。然而，弄清两者之间的不同，让你在写代码当时避免一些深坑是非常值得的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python2和Python3的区别总结">
+<meta property="og:url" content="http://noble4cc.me/2016/01/16/The-difference-between-python2-and-python3/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="许多初学Python的同学总是在问一个问题，是该学习Python2还是该学习Python3。许多对这个问题的回答经常是：仅仅学习你就喜欢的版本之后再找出之间的不同就可以了。但是如果你开发一个新的项目该如何选择版本呢？只要Python2和Python都支持你所需要的类库，没有什么正确和错误的。然而，弄清两者之间的不同，让你在写代码当时避免一些深坑是非常值得的。">
+<meta property="og:updated_time" content="2016-04-16T06:09:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python2和Python3的区别总结">
+<meta name="twitter:description" content="许多初学Python的同学总是在问一个问题，是该学习Python2还是该学习Python3。许多对这个问题的回答经常是：仅仅学习你就喜欢的版本之后再找出之间的不同就可以了。但是如果你开发一个新的项目该如何选择版本呢？只要Python2和Python都支持你所需要的类库，没有什么正确和错误的。然而，弄清两者之间的不同，让你在写代码当时避免一些深坑是非常值得的。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Python2和Python3的区别总结 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Search
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Python2和Python3的区别总结
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Posted on</span>
+            <time itemprop="dateCreated" datetime="2016-01-16T16:40:00+08:00" content="2016-01-16">
+              2016-01-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/01/16/The-difference-between-python2-and-python3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/01/16/The-difference-between-python2-and-python3/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>许多初学Python的同学总是在问一个问题，是该学习Python2还是该学习Python3。许多对这个问题的回答经常是：仅仅学习你就喜欢的版本之后再找出之间的不同就可以了。<br>但是如果你开发一个新的项目该如何选择版本呢？只要Python2和Python都支持你所需要的类库，没有什么正确和错误的。然而，弄清两者之间的不同，让你在写代码当时避免一些深坑是非常值得的。<br><a id="more"></a><br><strong>目录</strong></p>
+<ul>
+<li>__future__ module  </li>
+<li>The print 方法  </li>
+<li>Integer 分割  </li>
+<li>Unicode  </li>
+<li>xrange  </li>
+<li>抛出异常</li>
+<li>捕获异常</li>
+<li>next() 函数和 .next() 方法  </li>
+<li>For-loop variables and the global namespace leak  </li>
+<li>Comparing unorderable types  </li>
+<li>Parsing user inputs via input()  </li>
+<li>返回可迭代的对象以代替列表  </li>
+</ul>
+<h4 id="The-future-module"><a href="#The-future-module" class="headerlink" title="The __future__ module"></a>The __future__ module</h4><p>Python3使用一些与Python2不兼容的关键字或特性，可以使用Python2的内建__future__模块实现，如果你计划在你的代码中使用Python3的特性，可以同过导入__future__实现。例如如果你想在Python2中使用Python3中的 integer division特性，可以这样使用：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from __future__ import division</span><br></pre></td></tr></table></figure>
+<p>更多关于<strong>feture</strong>能导入的特性：</p>
+<table>
+<thead>
+<tr>
+<th>feature</th>
+<th>optional in</th>
+<th>mandatory in</th>
+<th>effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>nested_scopes</td>
+<td>2.1.0b1</td>
+<td>2.2</td>
+<td>PEP 227: Statically Nested Scopes</td>
+</tr>
+<tr>
+<td>generators</td>
+<td>2.2.0a1</td>
+<td>2.3</td>
+<td>PEP 255: Simple Generators</td>
+</tr>
+<tr>
+<td>division</td>
+<td>2.2.0a2</td>
+<td>3.0</td>
+<td>PEP 238: Changing the Division Operator</td>
+</tr>
+<tr>
+<td>absolute_import</td>
+<td>2.5.0a1</td>
+<td>3.0</td>
+<td>PEP 328: Imports: Multi-Line and Absolute/Relative</td>
+</tr>
+<tr>
+<td>with_statement</td>
+<td>2.5.0a1</td>
+<td>2.6</td>
+<td>PEP 343: The “with” Statement</td>
+</tr>
+<tr>
+<td>print_function</td>
+<td>2.6.0a2</td>
+<td>3.0</td>
+<td>PEP 3105: Make print a function</td>
+</tr>
+<tr>
+<td>unicode_literals</td>
+<td>2.6.0a2</td>
+<td>3.0</td>
+<td>PEP 3112: Bytes literals in Python 3000</td>
+</tr>
+</tbody>
+</table>
+<h4 id="print方法"><a href="#print方法" class="headerlink" title="print方法"></a>print方法</h4><p>print方法在Python中的改变应该是最广为人知的了。在Python2中如果使用print方法，我们可以添加括号print(‘info’)或者不添加括号 print ‘info’.但是在Python3<br>中必须添加括号，不添加括号的话会产生语法错误。</p>
+<p><strong>PYTHON 2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">print &apos;Hello, World!&apos;</span><br><span class="line">print(&apos;Hello, World!&apos;)</span><br><span class="line">print &quot;text&quot;, ; print &apos;print more text on the same line&apos;</span><br><span class="line">Python 2.7.6</span><br><span class="line">Hello, World!</span><br><span class="line">Hello, World!</span><br><span class="line">text print more text on the same line</span><br></pre></td></tr></table></figure>
+<p><strong>PYTHON 3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">print(&apos;Hello, World!&apos;)</span><br><span class="line"> </span><br><span class="line">print(&quot;some text,&quot;, end=&quot;&quot;)</span><br><span class="line">print(&apos; print more text on the same line&apos;)</span><br></pre></td></tr></table></figure>
+<p>Python 3.4.1<br>Hello, World!<br>some text, print more text on the same line  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Hello, World!&apos;</span><br><span class="line">File &quot;&quot;, line 1</span><br><span class="line">    print &apos;Hello, World!&apos;</span><br><span class="line">                            ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+<p>print在Python2中是一个statement，就是水哦在语法结构中就是这样的，和while，for是一样的。但是如果你打印多个元素的话，使用print()会包装成一个元组，print不会。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">print(&apos;a&apos;, &apos;b&apos;)</span><br><span class="line">print &apos;a&apos;, &apos;b&apos;</span><br></pre></td></tr></table></figure>
+<p>Python 2.7.6<br>(‘a’, ‘b’)<br>a b  </p>
+<p>####Integer division<br>这是一个非常危险的变化，因为在Python2中整数之间的除法是整除，而在Python3中会出现小数字。如果在Pytho3中使用整除必须使用两个除号。</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">print &apos;3 / 2 =&apos;, 3 / 2</span><br><span class="line">print &apos;3 // 2 =&apos;, 3 // 2</span><br><span class="line">print &apos;3 / 2.0 =&apos;, 3 / 2.0</span><br><span class="line">print &apos;3 // 2.0 =&apos;, 3 // 2.0</span><br></pre></td></tr></table></figure></p>
+<p>Python 2.7.6<br>3 / 2 = 1<br>3 // 2 = 1<br>3 / 2.0 = 1.5<br>3 // 2.0 = 1.0 </p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">print(&apos;3 / 2 =&apos;, 3 / 2)</span><br><span class="line">print(&apos;3 // 2 =&apos;, 3 // 2)</span><br><span class="line">print(&apos;3 / 2.0 =&apos;, 3 / 2.0)</span><br><span class="line">print(&apos;3 // 2.0 =&apos;, 3 // 2.0)</span><br></pre></td></tr></table></figure></p>
+<p>Python 3.4.1<br>3 / 2 = 1.5<br>3 // 2 = 1<br>3 / 2.0 = 1.5<br>3 // 2.0 = 1.0  </p>
+<h4 id="Unicode"><a href="#Unicode" class="headerlink" title="Unicode"></a>Unicode</h4><p>在Python2中有ASCII string类型，有unicode string类型两种，但是没有用byte类型<br>，在Python中有了unicodestring类型和两种byte类型：byte和bytearrays</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">Python 2.7.6</span><br><span class="line">print type(unicode(&apos;this is like a python3 str type&apos;))</span><br><span class="line">&amp;lt;type &apos;unicode&apos;&amp;gt;</span><br><span class="line">print type(b&apos;byte type does not exist&apos;)</span><br><span class="line">&amp;lt;type &apos;str&apos;&amp;gt;</span><br><span class="line">print &apos;they are really&apos; + b&apos; the same&apos;</span><br><span class="line">they are really the same</span><br><span class="line">print type(bytearray(b&apos;bytearray oddly does exist though&apos;))</span><br><span class="line">&amp;lt;type &apos;bytearray&apos;&amp;gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">print(&apos;strings are now utf-8 \u03BCnico\u0394é!&apos;)</span><br><span class="line">Python 3.4.1</span><br><span class="line">strings are now utf-8 μnicoΔé!</span><br><span class="line">print(&apos;Python&apos;, python_version(), end=&quot;&quot;)</span><br><span class="line">print(&apos; has&apos;, type(b&apos; bytes for storing data&apos;))</span><br><span class="line">Python 3.4.1 has &amp;lt;class &apos;bytes&apos;&amp;gt;</span><br><span class="line">print(&apos;and Python&apos;, python_version(), end=&quot;&quot;)</span><br><span class="line">print(&apos; also has&apos;, type(bytearray(b&apos;bytearrays&apos;)))</span><br><span class="line">and Python 3.4.1 also has &amp;lt;class &apos;bytearray&apos;&amp;gt;</span><br><span class="line">&apos;note that we cannot add a string&apos; + b&apos;bytes for data&apos;</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">----&amp;gt; 1 &apos;note that we cannot add a string&apos; + b&apos;bytes for data&apos;</span><br><span class="line"> </span><br><span class="line">TypeError: Can&apos;t convert &apos;bytes&apos; object to str implicitly</span><br></pre></td></tr></table></figure></p>
+<p>#####xrange<br>在Python2中，xrang()会产生一个可迭代的对象，类似于generator，为什么使用可迭代对象呢，因为当使用for循环进行迭代时，rang方法返回的是一个list，如果数据量过大，list对象都会载入内存，会浪费大量的资源。使用可迭代对象不会产生这个现象。<br>在Python3中rang默认就是返回可迭代对象，所以xrang在Python3中被取消了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import timeit</span><br><span class="line"> </span><br><span class="line">n = 10000</span><br><span class="line">def test_range(n):</span><br><span class="line">    for i in range(n):</span><br><span class="line">        pass</span><br><span class="line"> </span><br><span class="line">def test_xrange(n):</span><br><span class="line">    for i in xrange(n):</span><br><span class="line">        pass</span><br></pre></td></tr></table></figure>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line"> </span><br><span class="line">print &apos;\ntiming range()&apos;</span><br><span class="line">%timeit test_range(n)</span><br><span class="line"> </span><br><span class="line">print &apos;\n\ntiming xrange()&apos;</span><br><span class="line">%timeit test_xrange(n)</span><br></pre></td></tr></table></figure></p>
+<p>Python 2.7.6<br>timing range()<br>1000 loops, best of 3: 433 µs per loop<br>timing xrange()<br>1000 loops, best of 3: 350 µs per loop  </p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line"> </span><br><span class="line">print(&apos;\ntiming range()&apos;)</span><br><span class="line">%timeit test_range(n)</span><br></pre></td></tr></table></figure></p>
+<p>Python 3.4.1<br>timing range()<br>1000 loops, best of 3: 520 µs per loop<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(xrange(10))</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">NameError                                 Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">----&amp;gt; 1 print(xrange(10))</span><br><span class="line"> </span><br><span class="line">NameError: name &apos;xrange&apos; is not defined</span><br></pre></td></tr></table></figure></p>
+<p>不少人指出Python3的rang方法比Python2的xrang方法要慢，但是应该指出的是：相同的Python实现，2是要比3要快</p>
+<p>####抛出异常<br>在Python2中如果你raise一个异常，可以不适用括号，但是在Python3不适用括号的话，会提示语法异常</p>
+<p><strong>PYTHON 2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">Python 2.7.6</span><br><span class="line">raise IOError, &quot;file error&quot;</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">IOError                                   Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">----&amp;gt; 1 raise IOError, &quot;file error&quot;</span><br><span class="line"> </span><br><span class="line">IOError: file error</span><br><span class="line">raise IOError(&quot;file error&quot;)</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">IOError                                   Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">----&amp;gt; 1 raise IOError(&quot;file error&quot;)</span><br><span class="line"> </span><br><span class="line">IOError: file error</span><br></pre></td></tr></table></figure>
+<p><strong>PYTHON 3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">Python 3.4.1</span><br><span class="line">raise IOError, &quot;file error&quot;</span><br><span class="line">File &quot;&quot;, line 1</span><br><span class="line">raise IOError, &quot;file error&quot;</span><br><span class="line">                     ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+<p>在Python中正确的抛出异常的方法：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">raise IOError(&quot;file error&quot;)</span><br><span class="line"> </span><br><span class="line">Python 3.4.1</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">OSError                                   Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">      1 print(&apos;Python&apos;, python_version())</span><br><span class="line">----&amp;gt; 2 raise IOError(&quot;file error&quot;)</span><br><span class="line"> </span><br><span class="line">OSError: file error</span><br></pre></td></tr></table></figure>
+<p>####捕获异常<br>在Python3抛出异常我们做了一下改变，必须使用 as 关键字</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">try:</span><br><span class="line">    let_us_cause_a_NameError</span><br><span class="line">except NameError, err:</span><br><span class="line">    print err, &apos;--&amp;gt; our error message&apos;</span><br><span class="line">Python 2.7.6</span><br><span class="line">name &apos;let_us_cause_a_NameError&apos; is not defined --&amp;gt; our error message</span><br></pre></td></tr></table></figure></p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">try:</span><br><span class="line">    let_us_cause_a_NameError</span><br><span class="line">except NameError as err:</span><br><span class="line">    print(err, &apos;--&amp;gt; our error message&apos;)</span><br><span class="line">Python 3.4.1</span><br><span class="line">name &apos;let_us_cause_a_NameError&apos; is not defined --&amp;gt; our error message</span><br></pre></td></tr></table></figure></p>
+<p>####next() 函数和 .next() 方法<br>由于在Python2中next()函数和.next()方法都是常用的，所以对于语法上的改变是值得我们关注的。<br>对于可迭代对象（如元组和列表），在Python2中可以使用next()和.next，在Python3中使用.next会产生AttributeError</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line"> </span><br><span class="line">my_generator = (letter for letter in &apos;abcdefg&apos;)</span><br><span class="line"> </span><br><span class="line">next(my_generator)</span><br><span class="line">my_generator.next()</span><br></pre></td></tr></table></figure></p>
+<p>Python 2.7.6<br>‘b’  </p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line"> </span><br><span class="line">my_generator = (letter for letter in &apos;abcdefg&apos;)</span><br><span class="line"> </span><br><span class="line">next(my_generator)</span><br></pre></td></tr></table></figure></p>
+<p>Python 3.4.1<br>‘a’<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">my_generator.next()</span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">AttributeError                            Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">----&amp;gt; 1 my_generator.next()</span><br><span class="line"> </span><br><span class="line">AttributeError: &apos;generator&apos; object has no attribute &apos;next&apos;</span><br></pre></td></tr></table></figure></p>
+<p>####for循环变量和全局命名空间的泄露</p>
+<p>好消息就是在Python3的for循环变量不在泄露在全局名称空间内了。<br>可以理解为List在一不支持[… for var in item1, item2, …].语法了，而是被[… for var in (item1, item2, …)]代替了。就是在语法层面上实现了一个list的生成器，使得变量不在泄露到全局空间中。</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line"> </span><br><span class="line">i = 1</span><br><span class="line">print &apos;before: i =&apos;, i</span><br><span class="line"> </span><br><span class="line">print &apos;comprehension: &apos;, [i for i in range(5)]</span><br><span class="line"> </span><br><span class="line">print &apos;after: i =&apos;, i</span><br></pre></td></tr></table></figure></p>
+<p>Python 2.7.6<br>before: i = 1<br>comprehension:  [0, 1, 2, 3, 4]<br>after: i = 4<br><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line"> </span><br><span class="line">i = 1</span><br><span class="line">print(&apos;before: i =&apos;, i)</span><br><span class="line"> </span><br><span class="line">print(&apos;comprehension:&apos;, [i for i in range(5)])</span><br><span class="line"> </span><br><span class="line">print(&apos;after: i =&apos;, i)</span><br></pre></td></tr></table></figure></p>
+<p>Python 3.4.1<br>before: i = 1<br>comprehension: [0, 1, 2, 3, 4]<br>after: i = 1  </p>
+<p>####比较无序类型</p>
+<p>另外一个重大的改变是比较无序类型将不再有效。</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line">print &quot;[1, 2] &gt; &apos;foo&apos; = &quot;, [1, 2] &lt; &apos;foo&apos;</span><br><span class="line">print &quot;(1, 2) &gt; &apos;foo&apos; = &quot;, (1, 2) &lt; &apos;foo&apos;</span><br><span class="line">print &quot;[1, 2] &gt; (1, 2) = &quot;, [1, 2] &lt; (1, 2)</span><br></pre></td></tr></table></figure></p>
+<p>Python 2.7.6<br>[1, 2] &gt; ‘foo’ =  False<br>(1, 2) &gt; ‘foo’ =  True<br>[1, 2] &gt; (1, 2) =  False  </p>
+<p><strong>PYTHON 3</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line">print(&quot;[1, 2] &gt; &apos;foo&apos; = &quot;, [1, 2] &lt; &apos;foo&apos;)</span><br><span class="line">print(&quot;(1, 2) &gt; &apos;foo&apos; = &quot;, (1, 2) &lt; &apos;foo&apos;)</span><br><span class="line">print(&quot;[1, 2] &gt; (1, 2) = &quot;, [1, 2] &lt; (1, 2))</span><br><span class="line">Python 3.4.1</span><br><span class="line"> </span><br><span class="line">---------------------------------------------------------------------------</span><br><span class="line">TypeError                                 Traceback (most recent call last)</span><br><span class="line"> in ()</span><br><span class="line">      1 print(&apos;Python&apos;, python_version())</span><br><span class="line">----&gt; 2 print(&quot;[1, 2] &gt; &apos;foo&apos; = &quot;, [1, 2] &lt; &apos;foo&apos;)</span><br><span class="line">      3 print(&quot;(1, 2) &gt; &apos;foo&apos; = &quot;, (1, 2) &lt; &apos;foo&apos;)</span><br><span class="line">      4 print(&quot;[1, 2] &gt; (1, 2) = &quot;, [1, 2] &lt; (1, 2))</span><br><span class="line"> </span><br><span class="line">TypeError: unorderable types: list() &gt; str()</span><br></pre></td></tr></table></figure>
+<p>####input函数的修改</p>
+<p>在Python3中input函数被修改成了输入的只能是字符串。在Pytho2中如果使用input可能会输入字符串之外的类型，要想只输入字符串必须使用raw_input代替</p>
+<p><strong>PYTHON 2</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.6</span><br><span class="line">[GCC 4.0.1 (Apple Inc. build 5493)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line"> </span><br><span class="line">my_input = input(&apos;enter a number: &apos;)</span><br></pre></td></tr></table></figure></p>
+<p>enter a number: 123<br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(my_input)</span><br></pre></td></tr></table></figure></p>
+<p>type ‘int’<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">my_input = raw_input(&apos;enter a number: &apos;)</span><br></pre></td></tr></table></figure></p>
+<p>enter a number: 123<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(my_input)</span><br></pre></td></tr></table></figure></p>
+<p>type ‘str’<br><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Python 3.4.1</span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5577)] on darwin</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line"> </span><br><span class="line">my_input = input(&apos;enter a number: &apos;)</span><br></pre></td></tr></table></figure></p>
+<p>enter a number: 123<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">type(my_input)</span><br></pre></td></tr></table></figure></p>
+<p>class ‘str’</p>
+<p>####返回可迭代类型代替list</p>
+<p>在上面一节中我们已经知道了xrange方法已经被去除，range在Python3中返回的是可迭代类型。<br>如果你真的希望生成list类型，我们可以使用list()生成一下。</p>
+<p><strong>PYTHON 2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print &apos;Python&apos;, python_version()</span><br><span class="line"> </span><br><span class="line">print range(3)</span><br><span class="line">print type(range(3))</span><br></pre></td></tr></table></figure>
+<p>Python 2.7.6<br>[0, 1, 2]<br>type ‘list’</p>
+<p><strong>PYTHON 3</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;Python&apos;, python_version())</span><br><span class="line"> </span><br><span class="line">print(range(3))</span><br><span class="line">print(type(range(3)))</span><br><span class="line">print(list(range(3)))</span><br></pre></td></tr></table></figure></p>
+<p>Python 3.4.1<br>range(0, 3)<br>class ‘range’<br>[0, 1, 2]  </p>
+<p>原文出处<a href="http://spartanideas.msu.edu/2014/06/01/the-key-differences-between-python-2-7-x-and-python-3-x-with-examples/" target="_blank" rel="external">The key differences between Python 2.7.x and Python 3.x with examples</a></p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/30/Iterators-and-Generators/" rel="next" title="Iterators和Generators">
+                <i class="fa fa-chevron-left"></i> Iterators和Generators
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">19</span>
+              <span class="site-state-item-name">posts</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-future-module"><span class="nav-number">1.</span> <span class="nav-text">The __future__ module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#print方法"><span class="nav-number">2.</span> <span class="nav-text">print方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Unicode"><span class="nav-number">3.</span> <span class="nav-text">Unicode</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = '2016/01/16/The-difference-between-python2-and-python3/';
+      var disqus_title = 'Python2和Python3的区别总结';
+      var disqus_url = 'http://noble4cc.me/2016/01/16/The-difference-between-python2-and-python3/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
