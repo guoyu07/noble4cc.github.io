@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="noble4cc's Blog">
 <meta property="og:description" content="WSGI是一种协议，描述了web server如何与application交互。该规范的具体描述在PEP 3333(可能要翻墙)。当然这样的说法都不够通俗，在了解WSGI之前最好要了解一下CGI。">
 <meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-17%20%E4%B8%8A%E5%8D%8812.23.45.png">
-<meta property="og:updated_time" content="2016-04-16T16:58:31.000Z">
+<meta property="og:updated_time" content="2016-04-17T06:05:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="什么是WSGI">
 <meta name="twitter:description" content="WSGI是一种协议，描述了web server如何与application交互。该规范的具体描述在PEP 3333(可能要翻墙)。当然这样的说法都不够通俗，在了解WSGI之前最好要了解一下CGI。">
@@ -328,15 +328,15 @@
 
       
         <p>WSGI是一种协议，描述了web server如何与application交互。该规范的具体描述在<br><a href="https://www.python.org/dev/peps/pep-3333/" target="_blank" rel="external">PEP 3333(可能要翻墙)</a>。当然这样的说法都不够通俗，在了解WSGI之前最好要了解一下CGI。<br><a id="more"></a></p>
-<p>##CGI<br>CGI是上古时代存在的东西，他是一种协议，规定web服务器和web应用之间通信的方式。这是最早编写web应用的一种方式，在像php这种服务端脚本出现之前，工程师编写网站就是通过这种原始的方式。再说通俗点，CGI是种协议，什么叫做协议，其实都是约定俗称的东西，遵循它就能得到正确的结果，就像平时说英语，为什么要这样说，其实是大家都这么说，没有为什么，如果换了一种说法，别人就听不懂了。CGI主要作用是什么能，它规定了服务器和web应用之间怎样交流信息。比如你在向服务器请求资源（比如在地址栏输入URL，就在向服务器请求HTML页面），服务器一般有程序接受请求（常见的比如Apache、ngnix）然后将接受到的信息（资源路径、请求的方法）传送给实现了CGI协议的程序（可以说是CGI程序），程序根据信息生成对应的资源（一般是HTML）返回给服务器，服务器再将资源返回给客户端，这就完成了一次通信，当然这其中的过程并没有描述的这样简单，涉及到HTTP请参考我的另一篇博文<a href="http://noble4cc.me/HTTP-agreement-to-explain/">Http协议讲解</a>  </p>
+<h2 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h2><p>CGI是上古时代存在的东西，他是一种协议，规定web服务器和web应用之间通信的方式。这是最早编写web应用的一种方式，在像php这种服务端脚本出现之前，工程师编写网站就是通过这种原始的方式。再说通俗点，CGI是种协议，什么叫做协议，其实都是约定俗称的东西，遵循它就能得到正确的结果，就像平时说英语，为什么要这样说，其实是大家都这么说，没有为什么，如果换了一种说法，别人就听不懂了。CGI主要作用是什么能，它规定了服务器和web应用之间怎样交流信息。比如你在向服务器请求资源（比如在地址栏输入URL，就在向服务器请求HTML页面），服务器一般有程序接受请求（常见的比如Apache、ngnix）然后将接受到的信息（资源路径、请求的方法）传送给实现了CGI协议的程序（可以说是CGI程序），程序根据信息生成对应的资源（一般是HTML）返回给服务器，服务器再将资源返回给客户端，这就完成了一次通信，当然这其中的过程并没有描述的这样简单，涉及到HTTP请参考我的另一篇博文<a href="http://noble4cc.me/HTTP-agreement-to-explain/">Http协议讲解</a>  </p>
 <p><code>其实WSGI和CGI看起来类似，但本质上不是一种东西</code>,具体为什么下面再讲。WSGI我专门为Python语言而生的，当然其他语言（比如Python和PHP）做的app只要遵循这个标准也是可以的。类似于CGI的变种协议还有现在使用比较多的fastCGI，这是CGI的加强版本。CGI每次处理一个请求都会fork，然后执行。这样会造成效率低下的问题（创建进程是需要时间），fastCGI是预先创建好一堆进程，有请求直接拿创建好的进程去处理。处理完后放回进程池，这样会大大提高处理的效率。</p>
-<p>##WSGI内容<br>WSGI同样是一种规范，同样也是定义server和application之间的规范，不同的是CGI定义的是server和app进程间通信的方式，比如使用标准输入输出和写入进程的环境变量，fastCGI使用TCP和管道，而WSGI是针对API的，也就是接口参数的标准化。WSGI主要实现三个组件server、middleware、app。<br><strong>server:</strong><br>实现了WSGI的server，处理请求时会调用编写好的web应用，web应用会通过配置的形式注册到server，server会去app中寻找一个application的可调用对象（也就是一个函数或者实现了__call__的类）。调用这个可调用对象，并传入两个参数<code>environ、start_response</code>,这个可调用对象是app的唯一入口，所有的请求都通过这个入口进行处理。</p>
+<h2 id="WSGI内容"><a href="#WSGI内容" class="headerlink" title="WSGI内容"></a>WSGI内容</h2><p>WSGI同样是一种规范，同样也是定义server和application之间的规范，不同的是CGI定义的是server和app进程间通信的方式，比如使用标准输入输出和写入进程的环境变量，fastCGI使用TCP和管道，而WSGI是针对API的，也就是接口参数的标准化。WSGI主要实现三个组件server、middleware、app。<br><strong>server:</strong><br>实现了WSGI的server，处理请求时会调用编写好的web应用，web应用会通过配置的形式注册到server，server会去app中寻找一个application的可调用对象（也就是一个函数或者实现了__call__的类）。调用这个可调用对象，并传入两个参数<code>environ、start_response</code>,这个可调用对象是app的唯一入口，所有的请求都通过这个入口进行处理。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">application</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">     state = <span class="string">'200 OK'</span><span class="comment">#返回的状态</span></span><br><span class="line">     headers = [(<span class="string">'Content-type'</span>,<span class="string">'text/plain'</span>)]<span class="comment">#返回的报文头</span></span><br><span class="line">     start_response(state, headers)<span class="comment">#返回前调用这个会掉函数，传递必须的参数</span></span><br><span class="line">	 <span class="keyword">return</span> [<span class="string">'body'</span>]<span class="comment">#返回一个可迭代对象</span></span><br></pre></td></tr></table></figure>
 <p>environ是个字典，保存着请求传过来的各种参数，start_response其实是个callback，当返回生成的响应之前必须先调用start_response，传入状态和报文头，也只调用一次，这个调用时通知server我要返回报文了<br>我们可以使用Python标准库自带的wsgiref工具包实现一个wsgi server</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding=utf-8</span></span><br><span class="line"><span class="keyword">from</span> wsgiref.simple_server <span class="keyword">import</span> make_server</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">application</span><span class="params">(environ, start_response)</span>:</span></span><br><span class="line">    state = <span class="string">'200 OK'</span>  <span class="comment"># 返回的状态</span></span><br><span class="line">    headers = [(<span class="string">'Content-type'</span>, <span class="string">'text/html'</span>)]  <span class="comment"># 返回的报文头</span></span><br><span class="line">    start_response(state, headers)  <span class="comment"># 返回前调用这个会掉函数，传递必须的参数</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="string">'&lt;h1&gt;this is body&lt;/h1&gt;'</span>]  <span class="comment"># 返回一个可迭代对象</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">server=make_server(<span class="string">'0.0.0.0'</span>,<span class="number">8888</span>,application)</span><br><span class="line">server.serve_forever()</span><br></pre></td></tr></table></figure>
 <p>使用make_server创建一个server，将application注册到server，然后执行服务，在浏览器输入地址和绑定的端口，可以看到返回的页面<br><img src="http://7xifuy.com1.z0.glb.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202016-04-17%20%E4%B8%8A%E5%8D%8812.23.45.png" alt=""></p>
 <p><strong>middleware:</strong><br>middleware翻译过来就是中间件的意思，他其实是server和application之间的桥梁，在wsgi协议中，server不是直接和application直接通信的，server是通过中间件间接调用application的。<br>也就是说server调用server的入口也就是上面提到的application函数，然后中间件经过一堆处理，然后调用app的application，app返回产生的相应，中间件在经过一堆处理返回给server。这样做的好处我们可以通过中间件做一些处理，比如说验证和过滤，类似于Java中servlet的filter。<br><strong>app:</strong><br>前面已经讲过app了，这里说明一下，上面的例子这是一个简单的示例，实际生成响应的过程中是比较复杂的，这里会根据不同的框架做出不同的处理，常见的实现了WSGI协议的有django、flask、web.py….总之搞过python web的同学会发现Python的web框架从轻量级到重量级都都存在大量可选的。</p>
-<p>##总结<br>说道做python web的话，不得不提到各种框架，如之前提到过的django和flask、web.py，其实还有很多很多web框架，多到我也不知道有多少种，他们共同点都是实现了WSGI协议的，也就是说无论内部如何处理，入口都是一样的，这就让让我们部署web应用变得容易（虽然不如php方便，php的云主机满天飞）。WSGI也是各种web框架泛滥的原因，可以说WSGI是个伟大的协议。<br>现在主流的部署方式是通过常见的http server如Apache、nigix来实现的，这些服务器没有直接实现WSGI协议，Apache是使用mod_wsgi插件实现了WSGI的，nginx则只是做个代理，分发HTTP请求，将请求发送到实现了WSGI的server如uwsgi然后再从实现了WSGI的server中获得相应返还给client。总之Python应用的部署还是很灵活的，实现了WSGI的server也有很多，怎样使用要看实际情况了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>说道做python web的话，不得不提到各种框架，如之前提到过的django和flask、web.py，其实还有很多很多web框架，多到我也不知道有多少种，他们共同点都是实现了WSGI协议的，也就是说无论内部如何处理，入口都是一样的，这就让让我们部署web应用变得容易（虽然不如php方便，php的云主机满天飞）。WSGI也是各种web框架泛滥的原因，可以说WSGI是个伟大的协议。<br>现在主流的部署方式是通过常见的http server如Apache、nigix来实现的，这些服务器没有直接实现WSGI协议，Apache是使用mod_wsgi插件实现了WSGI的，nginx则只是做个代理，分发HTTP请求，将请求发送到实现了WSGI的server如uwsgi然后再从实现了WSGI的server中获得相应返还给client。总之Python应用的部署还是很灵活的，实现了WSGI的server也有很多，怎样使用要看实际情况了。</p>
 
       
     </div>
@@ -373,6 +373,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/C-language-call-Python-code/" rel="prev" title="C语言调用Python代码">
+                C语言调用Python代码 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -438,7 +442,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">20</span>
+              <span class="site-state-item-count">21</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
@@ -446,7 +450,7 @@
           
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">Kategorien</span>
               
             </div>
