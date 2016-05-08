@@ -1,0 +1,672 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="I/O，是服务端编程中比较常讨论的话题。也是比较基本的问题，了解I/O多路复用能让服务器承载更多的链接，更加有效的利用资源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux的IO多路复用">
+<meta property="og:url" content="http://noble4cc.me/IO-Linux-multiplexing/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="I/O，是服务端编程中比较常讨论的话题。也是比较基本的问题，了解I/O多路复用能让服务器承载更多的链接，更加有效的利用资源。">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/420px-InternetSocketBasicDiagram_zhtw.png">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/fd-inode-diagram.png">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/image005.jpg">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/1593755892-55c466c2b5fc5_articlex.png">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/1505222224-55c466dda9803_articlex.png">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/1903235121-55c466eb17665_articlex.png">
+<meta property="og:image" content="http://7xifuy.com1.z0.glb.clouddn.com/1311869885-55c466fac00ba_articlex.png">
+<meta property="og:updated_time" content="2016-05-08T14:46:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux的IO多路复用">
+<meta name="twitter:description" content="I/O，是服务端编程中比较常讨论的话题。也是比较基本的问题，了解I/O多路复用能让服务器承载更多的链接，更加有效的利用资源。">
+<meta name="twitter:image" content="http://7xifuy.com1.z0.glb.clouddn.com/420px-InternetSocketBasicDiagram_zhtw.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> Linux的IO多路复用 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux的IO多路复用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-02-18T22:16:41+08:00" content="2016-02-18">
+              2016-02-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/IO-Linux-multiplexing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="IO-Linux-multiplexing/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>I/O，是服务端编程中比较常讨论的话题。也是比较基本的问题，了解I/O多路复用能让服务器承载更多的链接，更加有效的利用资源。<br><a id="more"></a></p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="socket"><a href="#socket" class="headerlink" title="socket"></a>socket</h3><p>socket中文名字是套接字，其实本质上是一种api，提供主要实现了进程间的通讯，他最大的特点是可以跨主机，主要用来实现网络间的通信。现在的socket主要是指伯克利socket，我们平常实现一个路网通讯TCP或者UDP的链接就是使用socket来实现的。socket主要参数绑定主机名和端口号。</p>
+<p><img src="http://7xifuy.com1.z0.glb.clouddn.com/420px-InternetSocketBasicDiagram_zhtw.png" alt="image description"></p>
+<h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><p>在类Unix操作系统中的设计哲学是<code>一切都是文件</code>，也就是说普通的文件，目录、字符设备、块设备、 套接字等在Unix/Linux中都是以文件被对待；它们虽然类型不同，但是对其提供统一的访问方式，也就是说我们都可以通过read和write进行相关的操作。当你要访问一个文件的时候，无论是创建一个socket还是open一个普通文件，都会返回一个文件标示，也就是我们平常说的fd。文件描述符其实是一个非负整数。实际上，它是一个索引值，指向内核为每一个进程所维护的该进程打开文件的记录表。当程序打开一个现有文件或者创建一个新文件时，内核向进程返回一个文件描述符。常见的文件描述符0、1、2分别对应着标准输入、标准输出、标准错误。其实光这样说很多人其实不明白操作系统到底是怎样管理文件的，其实如果再底层一点可能就要说到linux的磁盘管理了（请看另外一篇博文<a href="http://noble4cc.me/Linux-note--Linux-disk-management/">《linux磁盘管理》</a>）。其实对于打开文件的管理是操作系统提供的（操作系统的主要功能之一就是提供文件管理），他会在自己的内部维护一张表，表内存放着打开文件的信息，分别存放着文件当前的偏移量、状态指向inode的指针，操作系统也会维护inode一张表（inode这里不再赘述），文件描述符是进程级别的，也就是说不通进程可能存在相同的描述符指向不通的文件或者相同的文件。一图胜千言：<br><img src="http://7xifuy.com1.z0.glb.clouddn.com/fd-inode-diagram.png" alt="image description"></p>
+<h3 id="内核地址用户地址"><a href="#内核地址用户地址" class="headerlink" title="内核地址用户地址"></a>内核地址用户地址</h3><p>简单来讲内存是被划分成两部分的，系统内存和用户内存。这样划分的原因主要是用户出于安全的考虑。系统的核心软件需要更高的权限。用户空间和系统空间的权限不同，普通用户的程序不能直接操作内核空间。还有cpu的运行状态也分内核态和用户态，两者简单来说也是权限的不同，内核态可以有更高的权限访问地址内核空间。让cpu从用户态陷入内核态的机制叫做系统调用。</p>
+<h3 id="进程切换"><a href="#进程切换" class="headerlink" title="进程切换"></a>进程切换</h3><p>一般cpu只有几个核心（以前只有一个核心），现在的操作系统都运行着不止一个进程，存在很多的进程并发执行。为了控制进程，操作系统会改变进程的状态，比如从执行态变为阻塞态。linux进行进程的调度需要做以下操作：  </p>
+<ol>
+<li>保存处理机上下文，包括程序计数器和其他寄存器。</li>
+<li>更新PCB信息。</li>
+<li>把进程的PCB移入相应的队列，如就绪、在某事件阻塞等队列。</li>
+<li>选择另一个进程执行，并更新其PCB。</li>
+<li>更新内存管理的数据结构。</li>
+<li>恢复处理机上下文。<br>写上面的东西是想说说明cpu的进程调度是相当耗时的，频繁的进程切换会造成极性能的严重下降。</li>
+</ol>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>缓存I/O又被称作标准I/O，大多数文件系统的默认I/O操作都是缓存I/O。在Linux的缓存I/O机制中，数据先从磁盘复制到内核空间的缓冲区，然后从内核空间缓冲区复制到应用程序的地址空间。<br>缓存I/O的优点：在一定程度上分离了内核空间和用户空间，保护系统本身的运行安全，另外可以减少读盘的次数，从而提高性能。<br>缓存I/O的缺点：数据在传输过程中需要在应用程序地址空间和缓存之间进行多次数据拷贝操作，这些数据拷贝操作所带来的CPU以及内存开销是非常大的。<br><img src="http://7xifuy.com1.z0.glb.clouddn.com/image005.jpg" alt="image description"></p>
+<h3 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h3><p>其实阻塞在我们日常编程中都是非常常见的，比如我们写了一个socket，等待对方连接上，这就是是阻塞的过程.阻塞就是当进程遇到特殊情况，如IO、延迟、挂起等情况，程序不再执行，交出CPU的控制权。进程从运行状态进入阻塞状态。知道消除阻塞，进程从阻塞状态进入就绪状态。<code>阻塞和非阻塞关注的是程序在等待调用结果（消息，返回值）时的状态.</code></p>
+<h3 id="同步异步"><a href="#同步异步" class="headerlink" title="同步异步"></a>同步异步</h3><p>同步是指当调用一段指令等待指令返回才结束调用，异步是一个调用后立即返回。<br><code>同步和异步关注的是消息通信机制</code></p>
+<h2 id="I-O模型"><a href="#I-O模型" class="headerlink" title="I/O模型"></a>I/O模型</h2><p>在linux下一共有5种IO模型：</p>
+<ul>
+<li>阻塞IO</li>
+<li>非阻塞IO</li>
+<li>IO多路复用</li>
+<li>信号驱动 IO</li>
+<li>异步IO  </li>
+</ul>
+<p>由于信号驱动IO并不常用，所以我们这里就不赘述。<br><strong>阻塞IO</strong><br>阻塞IO是最简单艹模型，也是最常用的，也就是当进行系统调用，向系统索要数据时，一直等待，内进行了第一个阶段，准备要获得数据。（<code>什么叫做准备数据：其实我们建立了一个连接，并不一定就马上获得数据，有可能数据有延时，也可能数据发送过来没不完整，就像一条水管，接通了就不一定有水过来，还要等待一段时间。对于复杂的网络环境更是如此</code>），等待数据别拷贝到内核的缓冲区，直到数据准备完成，进入第二阶段，将数据写入用户空间，完成IO</p>
+<p><img src="http://7xifuy.com1.z0.glb.clouddn.com/1593755892-55c466c2b5fc5_articlex.png" alt="image description"></p>
+<p><strong>非阻塞IO</strong><br>非阻塞IO简单来讲是数据准备发出系统调用后如果数据没准备好久就返回个错误，不会一直阻塞，然后继续请求，直到返回数据为止</p>
+<p><img src="http://7xifuy.com1.z0.glb.clouddn.com/1505222224-55c466dda9803_articlex.png" alt="image description"><br><strong>IO多路复用</strong><br>IO多路复用不光能处理一个请求，还能处理一组请求。通过某种机制，当某个连接准备好数据后，内核通知进程进行处理。IO多路复用解决的根本问题是单个进程如何高效率的处理多个IO请求，也就是如果高效率的读写多个IO文件。<br>IO多路复用还有个名字叫做事件驱动。Linux下住要是通过select、poll和epoll三种系统调用完成是，在其他平台上也有相应的系统调用，如BSD的kqueue和windows的IOPC。</p>
+<p><img src="http://7xifuy.com1.z0.glb.clouddn.com/1903235121-55c466eb17665_articlex.png" alt="image description"><br>上图用最简单的select进行演示说明：当调用select时，进程阻塞，直到被监控的链接有数据准备好的，返回，进行IO操作，数据被写入用户空间。<br><strong>异步IO</strong><br>异步IO就是将当进行系统调用时不等数据返回，直接返回，当数据准备好后，内核直接将数据写入用户空间，然后通知用户进程，数据写好了。<br><img src="http://7xifuy.com1.z0.glb.clouddn.com/1311869885-55c466fac00ba_articlex.png" alt="image description"></p>
+<h2 id="select-poll"><a href="#select-poll" class="headerlink" title="select/poll"></a>select/poll</h2><p>select是最早的IO复用方式，当时机器性能低下，，而且也没有现在的高并发的需求，所以，select被设计的比较简单。主要原理上面说的很清楚。现在但是由于历史遗留问题，select有以下缺点：<code>支持的最大连接数是有限的最大1024，当然你可以修改然后重新编译内核。select只是返回状态通知有数据准备好了，并没有通知哪个准备好，所以，每当数据准备好后，用户线程还有轮询所有的链接，找到目标链接，当连接的数量很大时会造成效率的低下。而且当每次调用select的时候，会将链接的集合从用户数据空间拷贝到内核数据空间，当集合很大时也会造成性能问题。</code><br>poll虽然在api上改变了，但是基本原理和select是相同的，只是去掉了连接数1024的上限。select存在的缺点并没有完全解决。</p>
+<h2 id="epoll"><a href="#epoll" class="headerlink" title="epoll"></a>epoll</h2><p>epoll是随着linux2.6发布，带来的全新的多路复用解决方式，直接代理性能革命性的提升。不同于前面的select和poll，epoll不光通知你有数据准备好了，还告诉你那个文件描述符准备好了数据。也就是说不需要在做轮训操作了。epoll的时间复杂度O(1) ，select和poll的时间复杂度O(n).  </p>
+<p>epoll 有两种工作方式：<br><strong>LT</strong>（level triggered）是缺省的工作方式，并且同时支持block和no-block socket.在这种做法中，内核告诉你一个文件描述符是否就绪了，然后你可以对这个就绪的fd进行IO操作。如果你不作任何操作，内核还是会继续通知你的，所以，这种模式编程出错误可能性要小一点。传统的select/poll都是这种模型的代表。  </p>
+<p><strong>ET</strong> （edge-triggered）是高速工作方式，只支持no-block socket。在这种模式下，当描述符从未就绪变为就绪时，内核通过epoll告诉你。然后它会假设你知道文件描述符已经就绪，并且不会再为那个文件描述符发送更多的就绪通知，直到你做了某些操作导致那个文件描述符不再为就绪状态了（比如，你在发送，接收或者接收请求，或者发送接收的数据少于一定量时导致了一个EWOULDBLOCK 错误）。但是请注意，如果一直不对这个fd作IO操作（从而导致它再次变成未就绪），内核不会发送更多的通知（onlyonce），不过在TCP协议中，ET模式的加速效用仍需要更多的benchmark确认。  </p>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><p><strong>select</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> select</span><br><span class="line"><span class="keyword">from</span> Queue <span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line"><span class="comment">#AF_INET指定使用IPv4协议，如果要用更先进的IPv6，就指定为AF_INET6。</span></span><br><span class="line"><span class="comment">#SOCK_STREAM指定使用面向流的TCP协议，如果要使用面向数据包的UCP协议，就指定SOCK_DGRAM。</span></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.setblocking(<span class="keyword">False</span>)</span><br><span class="line"><span class="comment">#设置监听的ip和port</span></span><br><span class="line">server_address = (<span class="string">'localhost'</span>, <span class="number">1234</span>)</span><br><span class="line">server.bind(server_address)</span><br><span class="line"><span class="comment">#设置backlog为5，client向server发起connect，server accept后建立长连接，</span></span><br><span class="line"><span class="comment">#backlog指定排队等待server accept的连接数量，超过这个数量，server将拒绝连接。</span></span><br><span class="line">server.listen(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#注册在socket上的读事件</span></span><br><span class="line">inputs = [server]</span><br><span class="line"><span class="comment">#注册在socket上的写事件</span></span><br><span class="line">outputs = []</span><br><span class="line"><span class="comment">#注册在socket上的异常事件</span></span><br><span class="line">exceptions = []</span><br><span class="line"><span class="comment">#每个socket有一个发送消息的队列</span></span><br><span class="line">msg_queues = &#123;&#125;</span><br><span class="line"><span class="keyword">print</span> <span class="string">"server is listening on %s:%s."</span> % server_address</span><br><span class="line"><span class="keyword">while</span> inputs:</span><br><span class="line">    <span class="comment">#第四个参数是timeout，可选，表示n秒内没有任何事件通知，就执行下面代码</span></span><br><span class="line">    readable, writable, exceptional = select.select(inputs, outputs, exceptions)</span><br><span class="line">    <span class="keyword">for</span> sock <span class="keyword">in</span> readable:</span><br><span class="line">        <span class="comment">#client向server发起connect也是读事件，server accept后产生socket加入读队列中</span></span><br><span class="line">        <span class="keyword">if</span> sock <span class="keyword">is</span> server:</span><br><span class="line">            conn, addr = sock.accept()</span><br><span class="line">            conn.setblocking(<span class="keyword">False</span>)</span><br><span class="line">            inputs.append(conn)</span><br><span class="line">            msg_queues[conn] = Queue()</span><br><span class="line">            <span class="keyword">print</span> <span class="string">"server accepts a conn."</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment">#读取client发过来的数据，最多读取1k byte。</span></span><br><span class="line">            data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">            <span class="comment">#将收到的数据返回给client</span></span><br><span class="line">            <span class="keyword">if</span> data:</span><br><span class="line">                msg_queues[sock].put(data)</span><br><span class="line">                <span class="keyword">if</span> sock <span class="keyword">not</span> <span class="keyword">in</span> outputs:</span><br><span class="line">                    <span class="comment">#下次select的时候会触发写事件通知，写和读事件不太一样，前者是可写就会触发事件，并不一定要真的去写</span></span><br><span class="line">                    outputs.append(sock)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment">#client传过来的消息为空，说明已断开连接</span></span><br><span class="line">                <span class="keyword">print</span> <span class="string">"server closes a conn."</span></span><br><span class="line">                <span class="keyword">if</span> sock <span class="keyword">in</span> outputs:</span><br><span class="line">                    outputs.remove(sock)</span><br><span class="line">                inputs.remove(sock)</span><br><span class="line">                sock.close()</span><br><span class="line">                <span class="keyword">del</span> msg_queues[sock]</span><br><span class="line">    <span class="keyword">for</span> sock <span class="keyword">in</span> writable:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> msg_queues[sock].empty():</span><br><span class="line">            sock.send(msg_queues[sock].get_nowait())</span><br><span class="line">        <span class="keyword">if</span> msg_queues[sock].empty():</span><br><span class="line">            outputs.remove(sock)</span><br><span class="line">    <span class="keyword">for</span> sock <span class="keyword">in</span> exceptional:</span><br><span class="line">        inputs.remove(sock)</span><br><span class="line">        <span class="keyword">if</span> sock <span class="keyword">in</span> outputs:</span><br><span class="line">            outputs.remove(sock)</span><br><span class="line">        sock.close()</span><br><span class="line">        <span class="keyword">del</span> msg_queues[sock]</span><br></pre></td></tr></table></figure></p>
+<p><strong>poll</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> select</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.setblocking(<span class="keyword">False</span>)</span><br><span class="line">server_address = (<span class="string">'localhost'</span>, <span class="number">1234</span>)</span><br><span class="line">server.bind(server_address)</span><br><span class="line">server.listen(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">'server is listening on %s port %s'</span> % server_address</span><br><span class="line">msg_queues = &#123;&#125;</span><br><span class="line">timeout = <span class="number">1000</span> * <span class="number">60</span></span><br><span class="line"><span class="comment">#POLLIN: There is data to read</span></span><br><span class="line"><span class="comment">#POLLPRI: There is urgent data to read</span></span><br><span class="line"><span class="comment">#POLLOUT: Ready for output</span></span><br><span class="line"><span class="comment">#POLLERR: Error condition of some sort</span></span><br><span class="line"><span class="comment">#POLLHUP: Hung up</span></span><br><span class="line"><span class="comment">#POLLNVAL: Invalid request: descriptor not open</span></span><br><span class="line">READ_ONLY = select.POLLIN | select.POLLPRI | select.POLLHUP | select.POLLERR</span><br><span class="line">READ_WRITE = READ_ONLY | select.POLLOUT</span><br><span class="line">poller = select.poll()</span><br><span class="line"><span class="comment">#注册需要监听的事件</span></span><br><span class="line">poller.register(server, READ_ONLY)</span><br><span class="line"><span class="comment">#文件描述符和socket映射</span></span><br><span class="line">fd_to_socket = &#123; server.fileno(): server&#125;</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    events = poller.poll(timeout)</span><br><span class="line">    <span class="keyword">for</span> fd, flag <span class="keyword">in</span> events:</span><br><span class="line">        sock = fd_to_socket[fd]</span><br><span class="line">        <span class="keyword">if</span> flag &amp; (select.POLLIN | select.POLLPRI):</span><br><span class="line">            <span class="keyword">if</span> sock <span class="keyword">is</span> server:</span><br><span class="line">                conn, client_address = sock.accept()</span><br><span class="line">                conn.setblocking(<span class="keyword">False</span>)</span><br><span class="line">                fd_to_socket[conn.fileno()] = conn</span><br><span class="line">                poller.register(conn, READ_ONLY)</span><br><span class="line">                msg_queues[conn] = Queue.Queue()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">                <span class="keyword">if</span> data:</span><br><span class="line">                    msg_queues[sock].put(data)</span><br><span class="line">                    poller.modify(sock, READ_WRITE)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    poller.unregister(sock)</span><br><span class="line">                    sock.close()</span><br><span class="line">                    <span class="keyword">del</span> msg_queues[sock]</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.POLLHUP:</span><br><span class="line">            poller.unregister(sock)</span><br><span class="line">            sock.close()</span><br><span class="line">            <span class="keyword">del</span> msg_queues[sock]</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.POLLOUT:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> msg_queues[sock].empty():</span><br><span class="line">                msg = msg_queues[sock].get_nowait()</span><br><span class="line">                sock.send(msg)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                poller.modify(sock, READ_ONLY)</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.POLLERR:</span><br><span class="line">            poller.unregister(sock)</span><br><span class="line">            sock.close()</span><br><span class="line">            <span class="keyword">del</span> msg_queues[sock]</span><br></pre></td></tr></table></figure>
+<p><strong>epoll</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> select</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> Queue</span><br><span class="line"></span><br><span class="line">server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">server.setblocking(<span class="keyword">False</span>)</span><br><span class="line">server_address = (<span class="string">'localhost'</span>, <span class="number">1234</span>)</span><br><span class="line">server.bind(server_address)</span><br><span class="line">server.listen(<span class="number">5</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">'server is listening on %s port %s'</span> % server_address</span><br><span class="line">msg_queues = &#123;&#125;</span><br><span class="line">timeout = <span class="number">60</span></span><br><span class="line">READ_ONLY = select.EPOLLIN | select.EPOLLPRI</span><br><span class="line">READ_WRITE = READ_ONLY | select.EPOLLOUT</span><br><span class="line">epoll = select.epoll()</span><br><span class="line"><span class="comment">#注册需要监听的事件</span></span><br><span class="line">epoll.register(server, READ_ONLY)</span><br><span class="line"><span class="comment">#文件描述符和socket映射</span></span><br><span class="line">fd_to_socket = &#123; server.fileno(): server&#125;</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    events = epoll.poll(timeout)</span><br><span class="line">    <span class="keyword">for</span> fd, flag <span class="keyword">in</span> events:</span><br><span class="line">        sock = fd_to_socket[fd]</span><br><span class="line">        <span class="keyword">if</span> flag &amp; READ_ONLY:</span><br><span class="line">            <span class="keyword">if</span> sock <span class="keyword">is</span> server:</span><br><span class="line">                conn, client_address = sock.accept()</span><br><span class="line">                conn.setblocking(<span class="keyword">False</span>)</span><br><span class="line">                fd_to_socket[conn.fileno()] = conn</span><br><span class="line">                epoll.register(conn, READ_ONLY)</span><br><span class="line">                msg_queues[conn] = Queue.Queue()</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                data = sock.recv(<span class="number">1024</span>)</span><br><span class="line">                <span class="keyword">if</span> data:</span><br><span class="line">                    msg_queues[sock].put(data)</span><br><span class="line">                    epoll.modify(sock, READ_WRITE)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    epoll.unregister(sock)</span><br><span class="line">                    sock.close()</span><br><span class="line">                    <span class="keyword">del</span> msg_queues[sock]</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.EPOLLHUP:</span><br><span class="line">            epoll.unregister(sock)</span><br><span class="line">            sock.close()</span><br><span class="line">            <span class="keyword">del</span> msg_queues[sock]</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.EPOLLOUT:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> msg_queues[sock].empty():</span><br><span class="line">                msg = msg_queues[sock].get_nowait()</span><br><span class="line">                sock.send(msg)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                epoll.modify(sock, READ_ONLY)</span><br><span class="line">        <span class="keyword">elif</span> flag &amp; select.EPOLLERR:</span><br><span class="line">            epoll.unregister(sock)</span><br><span class="line">            sock.close()</span><br><span class="line">            <span class="keyword">del</span> msg_queues[sock]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/The-difference-between-python2-and-python3/" rel="next" title="Python2和Python3的区别总结">
+                <i class="fa fa-chevron-left"></i> Python2和Python3的区别总结
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/what-is-wsgi/" rel="prev" title="什么是WSGI">
+                什么是WSGI <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">22</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = 'IO-Linux-multiplexing/';
+      var disqus_title = 'Linux的IO多路复用';
+      var disqus_url = 'http://noble4cc.me/IO-Linux-multiplexing/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
