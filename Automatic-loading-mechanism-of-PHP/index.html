@@ -1,0 +1,639 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PHP,autoload," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="noble4cc's Blog" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="PHP是一种脚本语言，每个php文件必须通过require和include打开后才能使用其中的代码，在以前的版本中也就是PHP5之前的版本，我们想使用一个文件必须require活着include，PHP5中引入了自动加载机制来解决这个问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP的自动装载机制">
+<meta property="og:url" content="http://noble4cc.me/Automatic-loading-mechanism-of-PHP/index.html">
+<meta property="og:site_name" content="noble4cc's Blog">
+<meta property="og:description" content="PHP是一种脚本语言，每个php文件必须通过require和include打开后才能使用其中的代码，在以前的版本中也就是PHP5之前的版本，我们想使用一个文件必须require活着include，PHP5中引入了自动加载机制来解决这个问题。">
+<meta property="og:updated_time" content="2016-05-26T13:29:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PHP的自动装载机制">
+<meta name="twitter:description" content="PHP是一种脚本语言，每个php文件必须通过require和include打开后才能使用其中的代码，在以前的版本中也就是PHP5之前的版本，我们想使用一个文件必须require活着include，PHP5中引入了自动加载机制来解决这个问题。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'Author'
+    }
+  };
+</script>
+
+  <title> PHP的自动装载机制 | noble4cc's Blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">noble4cc's Blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            Suche
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'YxPPYqKD_-TcNtzFic5Q','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                PHP的自动装载机制
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">Veröffentlicht am</span>
+            <time itemprop="dateCreated" datetime="2016-05-17T16:07:05+08:00" content="2016-05-17">
+              2016-05-17
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">in</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Automatic-loading-mechanism-of-PHP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Automatic-loading-mechanism-of-PHP/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PHP是一种脚本语言，每个php文件必须通过require和include打开后才能使用其中的代码，在以前的版本中也就是PHP5之前的版本，我们想使用一个文件必须require活着include，PHP5中引入了自动加载机制来解决这个问题。<br><a id="more"></a></p>
+<h2 id="自动加载机制"><a href="#自动加载机制" class="headerlink" title="自动加载机制"></a>自动加载机制</h2><p>在以前的编写PHP程序中，我们需要如果要引入别的文件，必须要require活着include，如果不引入就会提示找不到。也就是说我们每使用一个文件，就必须require或者include一下。但是这样在项目中文件较少的情况下还好但是如果你项目中有成百上千个文件，这种管理方式可能就没这么方便了，可能会存在遗漏的情况，也可能存在多次引用的情况。<br>于是，有聪明人想出了一个办法，单独定义一个文件，比如说名字叫做<code>files.php</code>，里面定义了大量的require命令，可能如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span>(<span class="string">'file1.php'</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'file2.php'</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'file3.php'</span>);</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'file4.php'</span>);</span><br><span class="line">    .</span><br><span class="line">    .</span><br><span class="line">    .</span><br><span class="line"><span class="keyword">require</span>(<span class="string">'filen.php'</span>);</span><br></pre></td></tr></table></figure>
+<p>每次我们需要在程序的一开始我们就引入files.php文件，也就是通过这个文件引入所有的文件，这样就不担心找不到或者多次引入了（<code>多次引入文件，如果文件内只有字段还好不会报错，但是如果存在函数的话，会报重复定义这个错误</code>）。<br>是的，这样简单粗暴，但是这样也会存在一些问题的，一次性再入大量引入大量的文件会占用太多的系统资源，定义的变量、类和函数等资源会载入内存中，这会导致占用大量的资源。<br>有没有更好方式呢？PHP官方给出的解决方案是使用PHP自动加载机制，PHP自动加载机制有两种一个是使用魔术方法__autoload，另外是使用spl中的函数spl_autoload_register实现。</p>
+<h2 id="autoload"><a href="#autoload" class="headerlink" title="__autoload"></a>__autoload</h2><p>autoload魔术方法是在PHP5中才引入的，以前的版本是无法使用的。这个方法默认是不存在的，你需要自己定义它。<br>具体原理是，当你引入使用一个类在该文件中不存在的时，不会直接报出错误，二十先调用这个方法，这个方法的唯一参数是你使用的类的名字。如果该函数执行完后还是找不到要执行的类，php解释器就会报一个错。依就是说在报错之前执行你自定义的处理方法，尽量的找到这些文件。<br>我们怎样在解释器报错之前怎样处理才合适呢？比如，我们在当前执行文件的目录下创建一个目录名字叫Models，在Models目录下存在一个文件名字叫SomeModel.php，SomeModel文件内代码和执行文件代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//SomeModel.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeModel</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'this is some model'</span>,PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//main.php</span></span><br><span class="line">$somdel=<span class="keyword">new</span> SomeModel();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__autoload</span><span class="params">($classname)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>($classname)</span><br><span class="line">    &#123;</span><br><span class="line">        $file=<span class="string">'Models'</span>.$classname;</span><br><span class="line">        <span class="keyword">if</span>(file_exists($file))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">require</span> ($file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>执行结果如下：<code>this is some model</code>;<br>完全可以执行，没有报错。在__autoload方法里我们定义了规则，我们通过拼接字符串得到文件的名字。然后判断该文件是否存在,如果存在我们就require这个文件。通过这种机制我们在没有事先require文件，就可以使用文件中定义的内容。<br>如果我们使用namespace呢，员也是一样的，我们可以修改一下上面的程序。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//SomeModel.php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Models</span>;<span class="comment">//定义namespace</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeModel</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span><span class="params">()</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">'this is some model'</span>,PHP_EOL;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//main.php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">Models</span>\<span class="title">SomeModel</span>;<span class="comment">//引入namespace</span></span><br><span class="line">$somdel=<span class="keyword">new</span> SomeModel();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">__autoload</span><span class="params">($classname)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>($classname)</span><br><span class="line">    &#123;</span><br><span class="line">        $file=str_replace(<span class="string">'\\'</span>,<span class="string">'/'</span>,$classname);</span><br><span class="line">        $file.=<span class="string">'.php'</span>;</span><br><span class="line">        <span class="keyword">if</span>(file_exists($file))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">require</span> ($file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和上面的例子类似，传入_autoload方法中的classname不单单是文件的名字，前面还带着命名空间。我们通过命名空间和磁盘上的路径做个映射得出实际文件的目录，判断是否存在，如果存在的话require<br>通过__autoload我们可以很轻松的实现自动加载，但是a这个方式也是有大量缺点的，比如如果我们使用的方式很复杂的话，函数体内会写的很长，这样就不利于维护。</p>
+<h2 id="spl-autoload-register"><a href="#spl-autoload-register" class="headerlink" title="spl_autoload_register"></a>spl_autoload_register</h2><p>在php5.1.2，引入了一种新的方式，spl_autoload_register函数，这个函数功能很简单，就是注册一个函数,注册的函数就相当于上面的__autoload函数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">use</span> <span class="title">Models</span>\<span class="title">SomeModel</span>;</span><br><span class="line">spl_autoload_register(<span class="string">'func'</span>);</span><br><span class="line">$somdel=<span class="keyword">new</span> SomeModel();</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func</span><span class="params">($classname)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>($classname)</span><br><span class="line">    &#123;</span><br><span class="line">        $file=str_replace(<span class="string">'\\'</span>,<span class="string">'/'</span>,$classname);</span><br><span class="line">        $file.=<span class="string">'.php'</span>;</span><br><span class="line">        <span class="keyword">if</span>(file_exists($file))</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">require</span> ($file);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过spl_autoload_register我们注册了一个函数，如果使用一个在没有引入的类，会自动调用spl_autoload_register中注册的函数，直到找到要使用的类为止。如果注册了多个函数会依次调用，如果还是找不到所需要的类，就会报错。<br>如果我们调用该函数没有指明参数，将会自动注册默认的实现的spl_autoload().<br>此外还有spl_autoload_unregister()卸载注册的函数，spl_autoload_functions()返回已经注册的函数。</p>
+<h2 id="Yii2中的自动调用"><a href="#Yii2中的自动调用" class="headerlink" title="Yii2中的自动调用"></a>Yii2中的自动调用</h2><p>其实自动加载机制在很多php框架中都很流行，虽然每套框架几乎都有自己的一套规则，大豆大同小异，下面我们看看yii2的自动加载机制。<br>要了解yii2的自动加载机制，我们必须从入口文件了解<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">defined(<span class="string">'YII_DEBUG'</span>) <span class="keyword">or</span> define(<span class="string">'YII_DEBUG'</span>, <span class="keyword">false</span>);</span><br><span class="line">defined(<span class="string">'YII_ENV'</span>) <span class="keyword">or</span> define(<span class="string">'YII_ENV'</span>, <span class="string">'prod'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是第三方的autoloader</span></span><br><span class="line"><span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../../vendor/autoload.php'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这个是Yii的Autoloader，放在最后面，确保其插入的autoloader会放在最前面</span></span><br><span class="line"><span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../../vendor/yiisoft/yii2/Yii.php'</span>);</span><br><span class="line"><span class="comment">// 后面不应再有autoloader了</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../../common/config/aliases.php'</span>);</span><br><span class="line"></span><br><span class="line">$config = yii\helpers\ArrayHelper::merge(</span><br><span class="line">    <span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../../common/config/main.php'</span>),</span><br><span class="line">    <span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../../common/config/main-local.php'</span>),</span><br><span class="line">    <span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../config/main.php'</span>),</span><br><span class="line">    <span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/../config/main-local.php'</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">$application = <span class="keyword">new</span> yii\web\Application($config);</span><br><span class="line">$application-&gt;run();</span><br></pre></td></tr></table></figure></p>
+<p>从入口文件中我们看到了require了Yii中的yii.php文件，我们找到这个文件。<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require</span>(<span class="keyword">__DIR__</span> . <span class="string">'/BaseYii.php'</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Yii</span> <span class="keyword">extends</span> \<span class="title">yii</span>\<span class="title">BaseYii</span></span><br><span class="line"></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 重点看这个 spl_autoload_register</span></span><br><span class="line">spl_autoload_register([<span class="string">'Yii'</span>, <span class="string">'autoload'</span>], <span class="keyword">true</span>, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下面的语句读取了一个映射表</span></span><br><span class="line">Yii::$classMap = <span class="keyword">include</span>(<span class="keyword">__DIR__</span> . <span class="string">'/classes.php'</span>);</span><br><span class="line"></span><br><span class="line">Yii::$container = <span class="keyword">new</span> yii\di\Container;</span><br></pre></td></tr></table></figure></p>
+<p>我们看到了使用了spl_autoload_register注册了一个方法，是在Yii类中的autoload方法。并且获得了一个映射表格，$classMap,映射表中其实就是一个超大号的数组，里面存放着命名空间和类文件路径的对应关系。我们主要看autoload方法中是如何实现的就行：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">function</span> <span class="title">autoload</span><span class="params">($className)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="keyword">static</span>::$classMap[$className])) &#123;</span><br><span class="line">        $classFile = <span class="keyword">static</span>::$classMap[$className];</span><br><span class="line">        <span class="keyword">if</span> ($classFile[<span class="number">0</span>] === <span class="string">'@'</span>) &#123;</span><br><span class="line">            $classFile = <span class="keyword">static</span>::getAlias($classFile);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (strpos($className, <span class="string">'\\'</span>) !== <span class="keyword">false</span>) &#123;</span><br><span class="line">        $classFile = <span class="keyword">static</span>::getAlias(<span class="string">'@'</span> . str_replace(<span class="string">'\\'</span>, <span class="string">'/'</span>,</span><br><span class="line">            $className) . <span class="string">'.php'</span>, <span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">if</span> ($classFile === <span class="keyword">false</span> || !is_file($classFile)) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>($classFile);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (YII_DEBUG &amp;&amp; !class_exists($className, <span class="keyword">false</span>) &amp;&amp;</span><br><span class="line">        !interface_exists($className, <span class="keyword">false</span>) &amp;&amp; !trait_exists($className,</span><br><span class="line">        <span class="keyword">false</span>)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnknownClassException(</span><br><span class="line">        <span class="string">"Unable to find '$className' in file: $classFile. Namespace missing?"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这其中包含了yii的别名机制，如果看不太懂请忽略，总的来说是处理classFile这个变量，也是通过处理，将传过来了的className变量转换成实际文件的路径，然后include一下。这就是yii的自动加载机制，虽然比上面的例子复杂很多，但是原理上是一致。</p>
+
+      
+    </div>
+    
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag">#PHP</a>
+          
+            <a href="/tags/autoload/" rel="tag">#autoload</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/C-language-call-Python-code/" rel="next" title="C语言调用Python代码">
+                <i class="fa fa-chevron-left"></i> C语言调用Python代码
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.png"
+               alt="noble4cc" />
+          <p class="site-author-name" itemprop="name">noble4cc</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">23</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">Kategorien</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">noble4cc</span>
+</div>
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="http://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'noble4cc';
+      var disqus_identifier = 'Automatic-loading-mechanism-of-PHP/';
+      var disqus_title = 'PHP的自动装载机制';
+      var disqus_url = 'http://noble4cc.me/Automatic-loading-mechanism-of-PHP/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
